@@ -29,6 +29,8 @@ namespace ArtezaStudio.Api.Services
             var entity = _mapper.Map<Comentario>(comentarioFiltroDto);
             entity.UsuarioId = comentarioFiltroDto.UsuarioId;
             entity.PublicacaoId = comentarioFiltroDto.PublicacaoId;
+            entity.Usuario = null;
+            entity.Publicacao = null;
 
             var novoComentario = await _comentarioRepository.CriarAsync(entity);
             return _mapper.Map<ComentarioDto>(novoComentario);
