@@ -10,6 +10,8 @@
 
         public ICollection<Comentario> Comentarios { get; set; } = new List<Comentario>();
 
+        public ICollection<Curtida> Curtidas { get; set; } = new List<Curtida>();
+
         public Guid UsuarioId { get; set; }
         public Usuario Usuario { get; set; } = new();
     }
