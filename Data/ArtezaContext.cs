@@ -12,13 +12,14 @@ namespace ArtezaStudio.Api.Data
         public DbSet<Publicacao> publicacoes { get; set; }
         public DbSet<Usuario> usuarios { get; set; }
         public DbSet<Comentario> comentarios { get; set; }
+        public DbSet<Curtida> curtidas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Configuração da entidade Publicacao
+            // Configuração da entidade Usuarios
             modelBuilder.Entity<Usuario>().ToTable("usuarios");
 
-            // Configuração da entidade Usuario
+            // Configuração da entidade Publicacoes
             modelBuilder.Entity<Publicacao>()
                 .HasOne(p => p.Usuario)
                 .WithMany()
@@ -29,13 +30,29 @@ namespace ArtezaStudio.Api.Data
                 .WithOne(c => c.Publicacao)
                 .HasForeignKey(c => c.PublicacaoId);
 
-            // Configuração da entidade Comentario
+            modelBuilder.Entity<Publicacao>()
+                .HasMany(p => p.Curtidas)
+                .WithOne(c => c.Publicacao)
+                .HasForeignKey(c => c.PublicacaoId);
+
+            // Configuração da entidade Comentarios
             modelBuilder.Entity<Comentario>()
                 .HasOne(u => u.Usuario)
                 .WithMany()
                 .HasForeignKey(u => u.UsuarioId);
 
             modelBuilder.Entity<Comentario>()
+                .HasOne(p => p.Publicacao)
+                .WithMany()
+                .HasForeignKey(p => p.PublicacaoId);
+
+            // Configuração da entidade Curtidas
+            modelBuilder.Entity<Curtida>()
+                .HasOne(u => u.Usuario)
+                .WithMany()
+                .HasForeignKey(u => u.UsuarioId);
+
+            modelBuilder.Entity<Curtida>()
                 .HasOne(p => p.Publicacao)
                 .WithMany()
                 .HasForeignKey(p => p.PublicacaoId);

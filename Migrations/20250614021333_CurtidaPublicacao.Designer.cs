@@ -3,6 +3,7 @@ using System;
 using ArtezaStudio.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArtezaStudio.Api.Migrations
 {
     [DbContext(typeof(ArtezaContext))]
-    partial class ArtezaContextModelSnapshot : ModelSnapshot
+    [Migration("20250614021333_CurtidaPublicacao")]
+    partial class CurtidaPublicacao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,17 +72,12 @@ namespace ArtezaStudio.Api.Migrations
                     b.Property<Guid>("PublicacaoId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid?>("PublicacaoId1")
-                        .HasColumnType("char(36)");
-
                     b.Property<Guid>("UsuarioId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PublicacaoId");
-
-                    b.HasIndex("PublicacaoId1");
 
                     b.HasIndex("UsuarioId");
 
@@ -189,10 +187,6 @@ namespace ArtezaStudio.Api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ArtezaStudio.Api.Entities.Publicacao", null)
-                        .WithMany("Curtidas")
-                        .HasForeignKey("PublicacaoId1");
-
                     b.HasOne("ArtezaStudio.Api.Entities.Usuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioId")
@@ -218,8 +212,6 @@ namespace ArtezaStudio.Api.Migrations
             modelBuilder.Entity("ArtezaStudio.Api.Entities.Publicacao", b =>
                 {
                     b.Navigation("Comentarios");
-
-                    b.Navigation("Curtidas");
                 });
 
             modelBuilder.Entity("ArtezaStudio.Api.Entities.Usuario", b =>
