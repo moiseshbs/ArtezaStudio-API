@@ -13,6 +13,7 @@ namespace ArtezaStudio.Api.Data
         public DbSet<Usuario> usuarios { get; set; }
         public DbSet<Comentario> comentarios { get; set; }
         public DbSet<Curtida> curtidas { get; set; }
+        public DbSet<Visualizacao> visualizacoes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,6 +36,11 @@ namespace ArtezaStudio.Api.Data
                 .WithOne(c => c.Publicacao)
                 .HasForeignKey(c => c.PublicacaoId);
 
+            modelBuilder.Entity<Publicacao>()
+                .HasMany(p => p.Visualizacoes)
+                .WithOne(c => c.Publicacao)
+                .HasForeignKey(c => c.PublicacaoId);
+
             // Configuração da entidade Comentarios
             modelBuilder.Entity<Comentario>()
                 .HasOne(u => u.Usuario)
@@ -53,6 +59,17 @@ namespace ArtezaStudio.Api.Data
                 .HasForeignKey(u => u.UsuarioId);
 
             modelBuilder.Entity<Curtida>()
+                .HasOne(p => p.Publicacao)
+                .WithMany()
+                .HasForeignKey(p => p.PublicacaoId);
+
+            // Configuração da entidade Visualizacoes
+            modelBuilder.Entity<Visualizacao>()
+                .HasOne(u => u.Usuario)
+                .WithMany()
+                .HasForeignKey(u => u.UsuarioId);
+
+            modelBuilder.Entity<Visualizacao>()
                 .HasOne(p => p.Publicacao)
                 .WithMany()
                 .HasForeignKey(p => p.PublicacaoId);

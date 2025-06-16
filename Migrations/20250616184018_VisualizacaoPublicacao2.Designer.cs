@@ -3,6 +3,7 @@ using System;
 using ArtezaStudio.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArtezaStudio.Api.Migrations
 {
     [DbContext(typeof(ArtezaContext))]
-    partial class ArtezaContextModelSnapshot : ModelSnapshot
+    [Migration("20250616184018_VisualizacaoPublicacao2")]
+    partial class VisualizacaoPublicacao2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
