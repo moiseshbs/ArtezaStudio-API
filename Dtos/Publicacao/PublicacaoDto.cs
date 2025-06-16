@@ -1,6 +1,7 @@
 ﻿using ArtezaStudio.Api.Dtos.Comentario;
 using ArtezaStudio.Api.Dtos.Curtida;
 using ArtezaStudio.Api.Dtos.Usuario;
+using ArtezaStudio.Api.Dtos.Visualizacao;
 using ArtezaStudio.Api.Entities;
 
 namespace ArtezaStudio.Api.Dtos.Publicacao
@@ -16,6 +17,8 @@ namespace ArtezaStudio.Api.Dtos.Publicacao
         public ICollection<ComentarioDto>? Comentarios { get; set; }
 
         public ICollection<CurtidaDto>? Curtidas { get; set; }
+
+        public ICollection<VisualizacaoDto>? Visualizacoes { get; set; }
 
         public Guid UsuarioId { get; set; }
         public UsuarioDto Usuario { get; set; }
