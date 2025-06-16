@@ -19,6 +19,7 @@ namespace ArtezaStudio.Api.Repositories
             return await _context.publicacoes
                 .Include(p => p.Usuario)
                 .Include(p => p.Comentarios)
+                .Include(p => p.Curtidas)
                 .ToListAsync();
         }
 
@@ -35,6 +36,7 @@ namespace ArtezaStudio.Api.Repositories
             return await _context.publicacoes
                 .Include(p => p.Usuario)
                 .Include(p => p.Comentarios)
+                .Include(p => p.Curtidas)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
