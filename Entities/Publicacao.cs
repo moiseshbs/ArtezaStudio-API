@@ -12,6 +12,8 @@
 
         public ICollection<Curtida> Curtidas { get; set; } = new List<Curtida>();
 
+        public ICollection<Visualizacao> Visualizacoes { get; set; } = new List<Visualizacao>();
+
         public Guid UsuarioId { get; set; }
         public Usuario Usuario { get; set; } = new();
     }
