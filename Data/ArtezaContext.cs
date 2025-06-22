@@ -16,11 +16,28 @@ namespace ArtezaStudio.Api.Data
         public DbSet<Visualizacao> Visualizacoes { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<PublicacaoTag> PublicacaoTags { get; set; }
+        public DbSet<UsuarioSeguidor> usuarioSeguidores { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Configuração da entidade Usuarios
             modelBuilder.Entity<Usuario>().ToTable("usuarios");
+
+            // Configuração da entidade UsuarioSeguidor
+            modelBuilder.Entity<UsuarioSeguidor>()
+                .HasKey(us => new { us.SeguidorId, us.SeguidoId });
+
+            modelBuilder.Entity<UsuarioSeguidor>()
+                .HasOne(us => us.Seguidor)
+                .WithMany()
+                .HasForeignKey(us => us.SeguidorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<UsuarioSeguidor>()
+                .HasOne(us => us.Seguido)
+                .WithMany()
+                .HasForeignKey(us => us.SeguidoId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Configuração da entidade Publicacoes
             modelBuilder.Entity<Publicacao>()
