@@ -23,6 +23,31 @@ namespace ArtezaStudio.Api.Controllers
             return Ok(publicacoes);
         }
 
+        [HttpGet("listarPublicacoesPorUsuario/{usuarioId}")]
+        public async Task<IActionResult> ListarPorUsuario(Guid usuarioId)
+        {
+            var publicacoes = await _publicacaoService.ListarPorUsuarioIdAsync(usuarioId);
+            return Ok(publicacoes);
+        }
+
+        [HttpGet("listarPublicacoesPorTag/{tagId}")]
+        public async Task<IActionResult> ListarPorTag(Guid tagId)
+        {
+            var publicacoes = await _publicacaoService.ListarPorTagIdAsync(tagId);
+            return Ok(publicacoes);
+        }
+
+        [HttpGet("listarPublicacoesPorTermo/{termo}")]
+        public async Task<IActionResult> ListarPorTermo(string termo)
+        {
+            if (string.IsNullOrWhiteSpace(termo))
+            {
+                return BadRequest("Termo de pesquisa inválido.");
+            }
+            var publicacoes = await _publicacaoService.ListarPorTermoAsync(termo);
+            return Ok(publicacoes);
+        }
+
         [HttpPost("criarPublicacao/")]
         public async Task<IActionResult> Criar([FromBody] PublicacaoFiltroDto publicacaoFiltroDto)
         {

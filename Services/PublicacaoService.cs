@@ -22,6 +22,24 @@ namespace ArtezaStudio.Api.Services
             return _mapper.Map<IEnumerable<PublicacaoDto>>(publicacoes);
         }
 
+        public async Task<IEnumerable<PublicacaoDto>> ListarPorUsuarioIdAsync(Guid usuarioId)
+        {
+            var publicacoes = await _publicacaoRepository.ListarPorUsuarioIdAsync(usuarioId);
+            return _mapper.Map<IEnumerable<PublicacaoDto>>(publicacoes);
+        }
+
+        public async Task<IEnumerable<PublicacaoDto>> ListarPorTagIdAsync(Guid tagId)
+        {
+            var publicacoes = await _publicacaoRepository.ListarPorTagIdAsync(tagId);
+            return _mapper.Map<IEnumerable<PublicacaoDto>>(publicacoes);
+        }
+
+        public async Task<IEnumerable<PublicacaoDto>> ListarPorTermoAsync(string termo)
+        {
+            var publicacoes = await _publicacaoRepository.ListarPorTermoAsync(termo);
+            return _mapper.Map<IEnumerable<PublicacaoDto>>(publicacoes);
+        }
+
         public async Task<PublicacaoDto> CriarAsync(PublicacaoFiltroDto publicacaoFiltroDto)
         {
             var entity = _mapper.Map<Publicacao>(publicacaoFiltroDto);

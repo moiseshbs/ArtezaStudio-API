@@ -20,6 +20,48 @@ namespace ArtezaStudio.Api.Repositories
                 .Include(p => p.Usuario)
                 .Include(p => p.Comentarios)
                 .Include(p => p.Curtidas)
+                .Include(p => p.Visualizacoes)
+                .Include(p => p.PublicacaoTags)
+                    .ThenInclude(pt => pt.Tag)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Publicacao>> ListarPorUsuarioIdAsync(Guid usuarioId)
+        {
+            return await _context.Publicacoes
+                .Where(p => p.UsuarioId == usuarioId)
+                .Include(p => p.Usuario)
+                .Include(p => p.Comentarios)
+                .Include(p => p.Curtidas)
+                .Include(p => p.Visualizacoes)
+                .Include(p => p.PublicacaoTags)
+                    .ThenInclude(pt => pt.Tag)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Publicacao>> ListarPorTagIdAsync(Guid tagId)
+        {
+            return await _context.Publicacoes
+                .Where(p => p.PublicacaoTags.Any(pt => pt.TagId == tagId))
+                .Include(p => p.Usuario)
+                .Include(p => p.Comentarios)
+                .Include(p => p.Curtidas)
+                .Include(p => p.Visualizacoes)
+                .Include(p => p.PublicacaoTags)
+                    .ThenInclude(pt => pt.Tag)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Publicacao>> ListarPorTermoAsync(string termo)
+        {
+            return await _context.Publicacoes
+                .Where(p => p.Titulo.ToLower().Contains(termo.ToLower()) || p.Descricao.ToLower().Contains(termo.ToLower()))
+                .Include(p => p.Usuario)
+                .Include(p => p.Comentarios)
+                .Include(p => p.Curtidas)
+                .Include(p => p.Visualizacoes)
+                .Include(p => p.PublicacaoTags)
+                    .ThenInclude(pt => pt.Tag)
                 .ToListAsync();
         }
 
@@ -37,6 +79,9 @@ namespace ArtezaStudio.Api.Repositories
                 .Include(p => p.Usuario)
                 .Include(p => p.Comentarios)
                 .Include(p => p.Curtidas)
+                .Include(p => p.Visualizacoes)
+                .Include(p => p.PublicacaoTags)
+                    .ThenInclude(pt => pt.Tag)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
