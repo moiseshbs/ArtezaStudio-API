@@ -9,16 +9,35 @@ namespace ArtezaStudio.Api.Data
         {
         }
 
-        public DbSet<Publicacao> publicacoes { get; set; }
-        public DbSet<Usuario> usuarios { get; set; }
-        public DbSet<Comentario> comentarios { get; set; }
-        public DbSet<Curtida> curtidas { get; set; }
-        public DbSet<Visualizacao> visualizacoes { get; set; }
+        public DbSet<Publicacao> Publicacoes { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Comentario> Comentarios { get; set; }
+        public DbSet<Curtida> Curtidas { get; set; }
+        public DbSet<Visualizacao> Visualizacoes { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<PublicacaoTag> PublicacaoTags { get; set; }
+        public DbSet<UsuarioSeguidor> usuarioSeguidores { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Configuração da entidade Usuarios
             modelBuilder.Entity<Usuario>().ToTable("usuarios");
+
+            // Configuração da entidade UsuarioSeguidor
+            modelBuilder.Entity<UsuarioSeguidor>()
+                .HasKey(us => new { us.SeguidorId, us.SeguidoId });
+
+            modelBuilder.Entity<UsuarioSeguidor>()
+                .HasOne(us => us.Seguidor)
+                .WithMany()
+                .HasForeignKey(us => us.SeguidorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<UsuarioSeguidor>()
+                .HasOne(us => us.Seguido)
+                .WithMany()
+                .HasForeignKey(us => us.SeguidoId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Configuração da entidade Publicacoes
             modelBuilder.Entity<Publicacao>()
@@ -73,6 +92,23 @@ namespace ArtezaStudio.Api.Data
                 .HasOne(p => p.Publicacao)
                 .WithMany()
                 .HasForeignKey(p => p.PublicacaoId);
+
+            // Configuração da entidade Tags
+            modelBuilder.Entity<Tag>().ToTable("tags");
+
+            // Configuração da entidade PublicacaoTags
+            modelBuilder.Entity<PublicacaoTag>()
+                .HasKey(pt => new { pt.PublicacaoId, pt.TagId });
+
+            modelBuilder.Entity<PublicacaoTag>()
+                .HasOne(pt => pt.Publicacao)
+                .WithMany(p => p.PublicacaoTags)
+                .HasForeignKey(pt => pt.PublicacaoId);
+
+            modelBuilder.Entity<PublicacaoTag>()
+                .HasOne(pt => pt.Tag)
+                .WithMany(t => t.PublicacaoTags)
+                .HasForeignKey(pt => pt.TagId);
         }
     }
 }

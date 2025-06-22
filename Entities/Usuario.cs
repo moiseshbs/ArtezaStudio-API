@@ -11,6 +11,9 @@
         public string ImagemPerfilUrl { get; set; } = string.Empty;
         public bool IsAtivo { get; set; } = true;
 
+        public ICollection<UsuarioSeguidor> Seguidores { get; set; } = new List<UsuarioSeguidor>();
+        public ICollection<UsuarioSeguidor> Seguindo { get; set; } = new List<UsuarioSeguidor>();
+
         public ICollection<Comentario>? Comentarios { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace ArtezaStudio.Api.Repositories
         public async Task<Curtida> CriarAsync(Curtida curtida)
         {
             curtida.Id = Guid.NewGuid();
-            _context.curtidas.Add(curtida);
+            _context.Curtidas.Add(curtida);
             await _context.SaveChangesAsync();
 
             return curtida;
@@ -25,12 +25,12 @@ namespace ArtezaStudio.Api.Repositories
 
         public async Task<bool> ExcluirAsync(Guid id)
         {
-            return await _context.curtidas.Where(c => c.Id == id).ExecuteDeleteAsync() > 0;
+            return await _context.Curtidas.Where(c => c.Id == id).ExecuteDeleteAsync() > 0;
         }
 
         public async Task<IEnumerable<Curtida>> ListarPorPublicacaoIdAsync(Guid publicacaoId)
         {
-            return await _context.curtidas
+            return await _context.Curtidas
                 .Where(c => c.PublicacaoId == publicacaoId)
                 .ToListAsync();
         }

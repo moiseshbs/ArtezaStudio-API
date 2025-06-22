@@ -3,6 +3,7 @@ using System;
 using ArtezaStudio.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArtezaStudio.Api.Migrations
 {
     [DbContext(typeof(ArtezaContext))]
-    partial class ArtezaContextModelSnapshot : ModelSnapshot
+    [Migration("20250619162956_TagsPublicacao")]
+    partial class TagsPublicacao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -184,34 +187,6 @@ namespace ArtezaStudio.Api.Migrations
                     b.ToTable("usuarios", (string)null);
                 });
 
-            modelBuilder.Entity("ArtezaStudio.Api.Entities.UsuarioSeguidor", b =>
-                {
-                    b.Property<Guid>("SeguidorId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("SeguidoId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<DateTime>("DataSeguimiento")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<Guid?>("UsuarioId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid?>("UsuarioId1")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("SeguidorId", "SeguidoId");
-
-                    b.HasIndex("SeguidoId");
-
-                    b.HasIndex("UsuarioId");
-
-                    b.HasIndex("UsuarioId1");
-
-                    b.ToTable("usuarioSeguidores");
-                });
-
             modelBuilder.Entity("ArtezaStudio.Api.Entities.Visualizacao", b =>
                 {
                     b.Property<Guid>("Id")
@@ -321,33 +296,6 @@ namespace ArtezaStudio.Api.Migrations
                     b.Navigation("Tag");
                 });
 
-            modelBuilder.Entity("ArtezaStudio.Api.Entities.UsuarioSeguidor", b =>
-                {
-                    b.HasOne("ArtezaStudio.Api.Entities.Usuario", "Seguido")
-                        .WithMany()
-                        .HasForeignKey("SeguidoId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("ArtezaStudio.Api.Entities.Usuario", "Seguidor")
-                        .WithMany()
-                        .HasForeignKey("SeguidorId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("ArtezaStudio.Api.Entities.Usuario", null)
-                        .WithMany("Seguidores")
-                        .HasForeignKey("UsuarioId");
-
-                    b.HasOne("ArtezaStudio.Api.Entities.Usuario", null)
-                        .WithMany("Seguindo")
-                        .HasForeignKey("UsuarioId1");
-
-                    b.Navigation("Seguido");
-
-                    b.Navigation("Seguidor");
-                });
-
             modelBuilder.Entity("ArtezaStudio.Api.Entities.Visualizacao", b =>
                 {
                     b.HasOne("ArtezaStudio.Api.Entities.Publicacao", "Publicacao")
@@ -390,10 +338,6 @@ namespace ArtezaStudio.Api.Migrations
             modelBuilder.Entity("ArtezaStudio.Api.Entities.Usuario", b =>
                 {
                     b.Navigation("Comentarios");
-
-                    b.Navigation("Seguidores");
-
-                    b.Navigation("Seguindo");
                 });
 #pragma warning restore 612, 618
         }
