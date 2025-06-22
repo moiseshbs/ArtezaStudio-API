@@ -8,5 +8,7 @@
         public string ImagemUrl { get; set; }
 
         public Guid UsuarioId { get; set; }
+
+        public List<Guid> TagIds { get; set; }
     }
 }

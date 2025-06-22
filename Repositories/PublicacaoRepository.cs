@@ -16,7 +16,7 @@ namespace ArtezaStudio.Api.Repositories
 
         public async Task<IEnumerable<Publicacao>> ListarAsync()
         {
-            return await _context.publicacoes
+            return await _context.Publicacoes
                 .Include(p => p.Usuario)
                 .Include(p => p.Comentarios)
                 .Include(p => p.Curtidas)
@@ -26,14 +26,14 @@ namespace ArtezaStudio.Api.Repositories
         public async Task<Publicacao> CriarAsync(Publicacao publicacao)
         {
             publicacao.Id = Guid.NewGuid();
-            _context.publicacoes.Add(publicacao);
+            _context.Publicacoes.Add(publicacao);
             await _context.SaveChangesAsync();
             return publicacao;
         }
 
         public async Task<Publicacao> ObterPorIdAsync(Guid id)
         {
-            return await _context.publicacoes
+            return await _context.Publicacoes
                 .Include(p => p.Usuario)
                 .Include(p => p.Comentarios)
                 .Include(p => p.Curtidas)
@@ -42,12 +42,12 @@ namespace ArtezaStudio.Api.Repositories
 
         public async Task<bool> ExcluirAsync(Guid id)
         {
-            return await _context.publicacoes.Where(p => p.Id == id).ExecuteDeleteAsync() > 0;
+            return await _context.Publicacoes.Where(p => p.Id == id).ExecuteDeleteAsync() > 0;
         }
 
         public async Task<Publicacao> AtualizarAsync(Publicacao publicacao)
         {
-            var procuraPublicacao = _context.publicacoes.Find(publicacao.Id);
+            var procuraPublicacao = _context.Publicacoes.Find(publicacao.Id);
             if (procuraPublicacao == null)
                 throw new KeyNotFoundException("Publicação não encontrada.");
 
@@ -55,6 +55,12 @@ namespace ArtezaStudio.Api.Repositories
             procuraPublicacao.Descricao = publicacao.Descricao;
 
             return await _context.SaveChangesAsync().ContinueWith(t => procuraPublicacao);
+        }
+
+        public async Task AdicionarPublicacaoTagAsync(PublicacaoTag publicacaoTag)
+        {
+            _context.PublicacaoTags.Add(publicacaoTag);
+            await _context.SaveChangesAsync();
         }
     }
 }

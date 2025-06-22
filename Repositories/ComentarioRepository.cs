@@ -16,7 +16,7 @@ namespace ArtezaStudio.Api.Repositories
 
         public async Task<Comentario> AtualizarAsync(Comentario comentario)
         {
-            var procuraComentario = _context.comentarios.Find(comentario.Id);
+            var procuraComentario = _context.Comentarios.Find(comentario.Id);
             if (procuraComentario == null)
                 throw new KeyNotFoundException("Comentário não encontrado.");
 
@@ -29,7 +29,7 @@ namespace ArtezaStudio.Api.Repositories
         public async Task<Comentario> CriarAsync(Comentario comentario)
         {
             comentario.Id = Guid.NewGuid();
-            _context.comentarios.Add(comentario);
+            _context.Comentarios.Add(comentario);
             await _context.SaveChangesAsync();
 
             return comentario;
@@ -37,12 +37,12 @@ namespace ArtezaStudio.Api.Repositories
 
         public async Task<bool> ExcluirAsync(Guid id)
         {
-            return await _context.comentarios.Where(c => c.Id == id).ExecuteDeleteAsync() > 0;
+            return await _context.Comentarios.Where(c => c.Id == id).ExecuteDeleteAsync() > 0;
         }
 
         public async Task<IEnumerable<Comentario>> ListarPorPublicacaoIdAsync(Guid publicacaoId)
         {
-            return await _context.comentarios
+            return await _context.Comentarios
                 .Where(c => c.PublicacaoId == publicacaoId)
                 .ToListAsync();
         }

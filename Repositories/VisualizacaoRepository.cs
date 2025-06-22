@@ -16,7 +16,7 @@ namespace ArtezaStudio.Api.Repositories
         public async Task<Visualizacao> CriarAsync(Visualizacao visualizacao)
         {
             visualizacao.Id = Guid.NewGuid();
-            _context.visualizacoes.Add(visualizacao);
+            _context.Visualizacoes.Add(visualizacao);
             await _context.SaveChangesAsync();
 
             return visualizacao;
@@ -24,7 +24,7 @@ namespace ArtezaStudio.Api.Repositories
 
         public async Task<IEnumerable<Visualizacao>> ListarPorPublicacaoIdAsync(Guid publicacaoId)
         {
-            return await _context.visualizacoes
+            return await _context.Visualizacoes
                 .Where(v => v.PublicacaoId == publicacaoId)
                 .ToListAsync();
         }

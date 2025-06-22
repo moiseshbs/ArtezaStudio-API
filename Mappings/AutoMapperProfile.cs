@@ -1,6 +1,7 @@
 ﻿using ArtezaStudio.Api.Dtos.Comentario;
 using ArtezaStudio.Api.Dtos.Curtida;
 using ArtezaStudio.Api.Dtos.Publicacao;
+using ArtezaStudio.Api.Dtos.Tag;
 using ArtezaStudio.Api.Dtos.Usuario;
 using ArtezaStudio.Api.Dtos.Visualizacao;
 using ArtezaStudio.Api.Entities;
@@ -15,7 +16,8 @@ namespace ArtezaStudio.Api.Mappings
             CreateMap<Publicacao, PublicacaoDto>();
             CreateMap<PublicacaoFiltroDto, Publicacao>()
                 .ForMember(dest => dest.Usuario, opt => opt.Ignore());
-
+            CreateMap<PublicacaoFiltroDto, Publicacao>()
+                .ForMember(dest => dest.PublicacaoTags, opt => opt.Ignore());
 
             CreateMap<Comentario, ComentarioDto>();
             CreateMap<ComentarioFiltroDto, Comentario>()
@@ -33,6 +35,13 @@ namespace ArtezaStudio.Api.Mappings
             CreateMap<UsuarioDto, Usuario>();
             CreateMap<UsuarioFiltroDto, Usuario>();
             CreateMap<Usuario, UsuarioFiltroDto>();
+
+            CreateMap<Tag, TagDto>()
+                .ForMember(dest => dest.PublicacaoTags, opt => opt.Ignore());
+            CreateMap<TagFiltroDto, Tag>();
+
+            CreateMap<PublicacaoTag, PublicacaoTagDto>()
+                .ForMember(dest => dest.Publicacao, opt => opt.Ignore());
         }
     }
 }

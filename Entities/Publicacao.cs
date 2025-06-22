@@ -14,6 +14,8 @@
 
         public ICollection<Visualizacao> Visualizacoes { get; set; } = new List<Visualizacao>();
 
+        public ICollection<PublicacaoTag> PublicacaoTags { get; set; } = new List<PublicacaoTag>();
+
         public Guid UsuarioId { get; set; }
         public Usuario Usuario { get; set; } = new();
     }
