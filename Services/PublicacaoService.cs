@@ -29,6 +29,21 @@ namespace ArtezaStudio.Api.Services
             entity.Usuario = null;
 
             var novaPublicacao = await _publicacaoRepository.CriarAsync(entity);
+
+            if (publicacaoFiltroDto.TagIds != null && publicacaoFiltroDto.TagIds.Any())
+            {
+                foreach (var tagId in publicacaoFiltroDto.TagIds)
+                {
+                    var publicacaoTag = new PublicacaoTag
+                    {
+                        PublicacaoId = novaPublicacao.Id,
+                        TagId = tagId
+                    };
+
+                    await _publicacaoRepository.AdicionarPublicacaoTagAsync(publicacaoTag);
+                }
+            }
+
             return _mapper.Map<PublicacaoDto>(novaPublicacao);
         }
 

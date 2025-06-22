@@ -21,6 +21,8 @@ builder.Services.AddScoped<ICurtidaRepository, CurtidaRepository>();
 builder.Services.AddScoped<ICurtidaService, CurtidaService>();
 builder.Services.AddScoped<IVisualizacaoRepository, VisualizacaoRepository>();
 builder.Services.AddScoped<IVisualizacaoService, VisualizacaoService>();
+builder.Services.AddScoped<ITagRepository, TagRepository>();
+builder.Services.AddScoped<ITagService, TagService>();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
