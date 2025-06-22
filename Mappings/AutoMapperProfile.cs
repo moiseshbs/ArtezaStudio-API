@@ -42,6 +42,11 @@ namespace ArtezaStudio.Api.Mappings
 
             CreateMap<PublicacaoTag, PublicacaoTagDto>()
                 .ForMember(dest => dest.Publicacao, opt => opt.Ignore());
+
+            CreateMap<UsuarioSeguidor, UsuarioSeguidorDto>();
+            CreateMap<SeguirUsuarioDto, UsuarioSeguidor>()
+                .ForMember(dest => dest.Seguidor, opt => opt.Ignore())
+                .ForMember(dest => dest.Seguido, opt => opt.Ignore());
         }
     }
 }

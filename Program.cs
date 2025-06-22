@@ -23,6 +23,8 @@ builder.Services.AddScoped<IVisualizacaoRepository, VisualizacaoRepository>();
 builder.Services.AddScoped<IVisualizacaoService, VisualizacaoService>();
 builder.Services.AddScoped<ITagRepository, TagRepository>();
 builder.Services.AddScoped<ITagService, TagService>();
+builder.Services.AddScoped<IUsuarioSeguidorRepository, UsuarioSeguidorRepository>();
+builder.Services.AddScoped<IUsuarioSeguidorService, UsuarioSeguidorService>();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
