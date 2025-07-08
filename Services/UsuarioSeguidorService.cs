@@ -2,9 +2,10 @@
 using ArtezaStudio.Api.Entities;
 using ArtezaStudio.Api.Repositories.Interfaces;
 using ArtezaStudio.Api.Services.Interfaces;
+using ArtezaStudio.Api.Services.Kafka;
 using AutoMapper;
 
-namespace ArtezaStudio.Api.Repositories
+namespace ArtezaStudio.Api.Services
 {
     public class UsuarioSeguidorService : IUsuarioSeguidorService
     {
@@ -33,6 +34,7 @@ namespace ArtezaStudio.Api.Repositories
         {
             var entity = _mapper.Map<UsuarioSeguidor>(seguirUsuarioDto);
             var result = await _usuarioSeguidorRepository.SeguirUsuarioAsync(entity);
+
             return _mapper.Map<UsuarioSeguidorDto>(result);
         }
 

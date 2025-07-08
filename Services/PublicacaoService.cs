@@ -82,5 +82,11 @@ namespace ArtezaStudio.Api.Services
             var publicacaoAtualizada = await _publicacaoRepository.AtualizarAsync(entity);
             return _mapper.Map<PublicacaoDto>(publicacaoAtualizada);
         }
+
+        public async Task<PublicacaoDto> ObterEmailAutorAsync(Guid publicacaoId)
+        {
+            var publicacao = await _publicacaoRepository.ObterEmailAutorAsync(publicacaoId);
+            return _mapper.Map<PublicacaoDto>(publicacao);
+        }
     }
 }

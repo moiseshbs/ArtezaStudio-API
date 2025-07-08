@@ -4,6 +4,7 @@ using ArtezaStudio.Api.Repositories;
 using ArtezaStudio.Api.Repositories.Interfaces;
 using ArtezaStudio.Api.Services;
 using ArtezaStudio.Api.Services.Interfaces;
+using ArtezaStudio.Api.Services.Kafka;
 using ArtezaStudio.Api.Validations;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -36,6 +37,7 @@ builder.Services.AddDbContext<ArtezaContext>(options =>
         builder.Configuration.GetConnectionString("MySqlConnection"),
         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("MySqlConnection"))
     ));
+builder.Services.AddSingleton<KafkaProducerService>();
 
 var app = builder.Build();
 

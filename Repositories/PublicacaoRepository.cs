@@ -107,5 +107,20 @@ namespace ArtezaStudio.Api.Repositories
             _context.PublicacaoTags.Add(publicacaoTag);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<Publicacao> ObterEmailAutorAsync(Guid id)
+        {
+            return await _context.Publicacoes
+                .Where(p => p.Id == id)
+                .Select(p => new Publicacao
+                {
+                    Id = p.Id,
+                    Usuario = new Usuario
+                    {
+                        Email = p.Usuario.Email
+                    }
+                })
+                .FirstOrDefaultAsync();
+        }
     }
 }

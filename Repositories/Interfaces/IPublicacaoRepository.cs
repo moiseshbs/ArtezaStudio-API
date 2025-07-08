@@ -13,5 +13,6 @@ namespace ArtezaStudio.Api.Repositories.Interfaces
         Task<bool> ExcluirAsync(Guid id);
         Task<Publicacao> AtualizarAsync(Publicacao publicacao);
         Task AdicionarPublicacaoTagAsync(PublicacaoTag publicacaoTag);
+        Task<Publicacao> ObterEmailAutorAsync(Guid id);
     }
 }

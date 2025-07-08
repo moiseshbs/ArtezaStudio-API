@@ -92,5 +92,12 @@ namespace ArtezaStudio.Api.Controllers
             var publicacaoAtualizada = await _publicacaoService.AtualizarAsync(publicacaoFiltroDto);
             return Ok(ApiResponse<PublicacaoDto>.Ok(publicacaoAtualizada, "Publicação atualizada com sucesso."));
         }
+
+        [HttpGet("{publicacaoId}/autor/email")]
+        public async Task<IActionResult> ObterEmailAutor(Guid publicacaoId)
+        {
+            var publicacoes = await _publicacaoService.ObterEmailAutorAsync(publicacaoId);
+            return Ok(publicacoes.Usuario.Email);
+        }
     }
 }

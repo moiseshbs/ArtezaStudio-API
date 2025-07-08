@@ -12,5 +12,6 @@ namespace ArtezaStudio.Api.Services.Interfaces
         Task<PublicacaoDto> ObterPorIdAsync(Guid id);
         Task<bool> ExcluirAsync(Guid id);
         Task<PublicacaoDto> AtualizarAsync(PublicacaoFiltroDto publicacaoFiltroDto);
+        Task<PublicacaoDto> ObterEmailAutorAsync(Guid publicacaoId);
     }
 }

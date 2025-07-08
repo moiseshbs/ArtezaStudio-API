@@ -2,6 +2,7 @@
 using ArtezaStudio.Api.Entities;
 using ArtezaStudio.Api.Repositories.Interfaces;
 using ArtezaStudio.Api.Services.Interfaces;
+using ArtezaStudio.Api.Services.Kafka;
 using AutoMapper;
 
 namespace ArtezaStudio.Api.Services
@@ -9,11 +10,13 @@ namespace ArtezaStudio.Api.Services
     public class CurtidaService : ICurtidaService
     {
         private readonly ICurtidaRepository _curtidaRepository;
+        private readonly KafkaProducerService _kafkaProducerService;
         private readonly IMapper _mapper;
 
-        public CurtidaService(ICurtidaRepository curtidaRepository, IMapper mapper)
+        public CurtidaService(ICurtidaRepository curtidaRepository, KafkaProducerService kafkaProducerService, IMapper mapper)
         {
             _curtidaRepository = curtidaRepository;
+            _kafkaProducerService = kafkaProducerService;
             _mapper = mapper;
         }
 
@@ -26,6 +29,14 @@ namespace ArtezaStudio.Api.Services
             entity.Publicacao = null;
 
             var novaCurtida = await _curtidaRepository.CriarAsync(entity);
+
+            await _kafkaProducerService.PublicarEventoAsync("curtida-created", new
+            {
+                UsuarioId = novaCurtida.UsuarioId,
+                PublicacaoId = novaCurtida.PublicacaoId,
+                DataCurtida = novaCurtida.DataCurtida
+            });
+
             return _mapper.Map<CurtidaDto>(novaCurtida);
         }
 
