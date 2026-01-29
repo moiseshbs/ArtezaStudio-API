@@ -16,14 +16,14 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpGet("listarSeguidores/{usuarioId}")]
-        public async Task<IActionResult> ListarSeguidores(Guid usuarioId)
+        public async Task<IActionResult> ListarSeguidores(long usuarioId)
         {
             var seguidores = await _usuarioSeguidorService.ListarSeguidoresAsync(usuarioId);
             return Ok(seguidores);
         }
 
         [HttpGet("listarSeguindo/{usuarioId}")]
-        public async Task<IActionResult> ListarSeguindo(Guid usuarioId)
+        public async Task<IActionResult> ListarSeguindo(long usuarioId)
         {
             var seguindo = await _usuarioSeguidorService.ListarSeguindoAsync(usuarioId);
             return Ok(seguindo);

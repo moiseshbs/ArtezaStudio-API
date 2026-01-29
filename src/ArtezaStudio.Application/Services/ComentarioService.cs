@@ -36,12 +36,12 @@ namespace ArtezaStudio.Application.Services
             return _mapper.Map<ComentarioDto>(novoComentario);
         }
 
-        public async Task<bool> ExcluirAsync(Guid id)
+        public async Task<bool> ExcluirAsync(long id)
         {
             return await _comentarioRepository.ExcluirAsync(id);
         }
 
-        public async Task<IEnumerable<ComentarioDto>> ListarPorPublicacaoIdAsync(Guid publicacaoId)
+        public async Task<IEnumerable<ComentarioDto>> ListarPorPublicacaoIdAsync(long publicacaoId)
         {
             var comentarios = await _comentarioRepository.ListarPorPublicacaoIdAsync(publicacaoId);
             return _mapper.Map<IEnumerable<ComentarioDto>>(comentarios);

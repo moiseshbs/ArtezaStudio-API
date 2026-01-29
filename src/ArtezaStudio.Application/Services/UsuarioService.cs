@@ -20,7 +20,7 @@ namespace ArtezaStudio.Application.Services
             var usuarios = await _usuarioRepository.ListarAsync();
             return _mapper.Map<IEnumerable<UsuarioDto>>(usuarios);
         }
-        public async Task<UsuarioDto> ObterPorIdAsync(Guid id)
+        public async Task<UsuarioDto> ObterPorIdAsync(long id)
         {
             var usuario = await _usuarioRepository.ObterPorIdAsync(id);
             return _mapper.Map<UsuarioDto>(usuario);
@@ -47,7 +47,7 @@ namespace ArtezaStudio.Application.Services
             var usuarioAtualizado = await _usuarioRepository.AtualizarAsync(entity);
             return _mapper.Map<UsuarioDto>(usuarioAtualizado);
         }
-        public async Task<bool> ExcluirAsync(Guid id)
+        public async Task<bool> ExcluirAsync(long id)
         {
             return await _usuarioRepository.ExcluirAsync(id);
         }

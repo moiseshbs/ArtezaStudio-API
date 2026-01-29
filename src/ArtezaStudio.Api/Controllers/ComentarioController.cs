@@ -17,7 +17,7 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpGet("listarComentarios/{idPublicacao}")]
-        public async Task<IActionResult> ListarPorPublicacaoIdAsync(Guid idPublicacao)
+        public async Task<IActionResult> ListarPorPublicacaoIdAsync(long idPublicacao)
         {
             var comentarios = await _comentarioService.ListarPorPublicacaoIdAsync(idPublicacao);
             if (comentarios == null || !comentarios.Any())
@@ -39,7 +39,7 @@ namespace ArtezaStudio.Api.Controllers
         [HttpPut("atualizarComentario/")]
         public async Task<IActionResult> AtualizarAsync([FromBody] ComentarioFiltroDto comentarioFiltroDto)
         {
-            if (comentarioFiltroDto == null || comentarioFiltroDto.Id == Guid.Empty)
+            if (comentarioFiltroDto == null || comentarioFiltroDto.Id == 0)
                 return BadRequest("Dados do comentário inválidos.");
 
             var comentarioAtualizado = await _comentarioService.AtualizarAsync(comentarioFiltroDto);
@@ -47,7 +47,7 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpDelete("excluirComentario/{id}")]
-        public async Task<IActionResult> ExcluirAsync(Guid id)
+        public async Task<IActionResult> ExcluirAsync(long id)
         {
             var excluido = await _comentarioService.ExcluirAsync(id);
             if (!excluido)

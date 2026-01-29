@@ -2,10 +2,10 @@
 {
     public class PublicacaoTag
     {
-        public Guid PublicacaoId { get; set; }
+        public long PublicacaoId { get; set; }
         public Publicacao Publicacao { get; set; }
 
-        public Guid TagId { get; set; }
+        public long TagId { get; set; }
         public Tag Tag { get; set; }
     }
 }

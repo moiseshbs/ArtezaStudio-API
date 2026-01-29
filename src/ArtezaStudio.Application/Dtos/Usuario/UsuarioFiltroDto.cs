@@ -2,7 +2,7 @@
 {
     public class UsuarioFiltroDto
     {
-        public Guid Id { get; set; }
+        public long Id { get; set; }
         public string Nome { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }

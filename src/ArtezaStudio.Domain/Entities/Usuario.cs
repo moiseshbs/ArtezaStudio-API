@@ -2,7 +2,7 @@
 {
     public class Usuario
     {
-        public Guid Id { get; set; }
+        public long Id { get; set; }
         public string Nome { get; set; } = string.Empty;
         public string Username { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
@@ -13,7 +13,6 @@
 
         public ICollection<UsuarioSeguidor> Seguidores { get; set; } = new List<UsuarioSeguidor>();
         public ICollection<UsuarioSeguidor> Seguindo { get; set; } = new List<UsuarioSeguidor>();
-
         public ICollection<Comentario>? Comentarios { get; set; }
     }
 }

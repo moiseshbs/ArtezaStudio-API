@@ -24,7 +24,7 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpGet("buscarPorId/{id}")]
-        public async Task<IActionResult> ObterPorId(Guid id)
+        public async Task<IActionResult> ObterPorId(long id)
         { 
             var usuario = await _usuarioService.ObterPorIdAsync(id);
             if (usuario == null)
@@ -59,7 +59,7 @@ namespace ArtezaStudio.Api.Controllers
         [HttpPut("atualizarUsuario/")]
         public async Task<IActionResult> Atualizar([FromBody] UsuarioFiltroDto usuarioFiltroDto)
         {
-            if (usuarioFiltroDto == null || usuarioFiltroDto.Id == Guid.Empty)
+            if (usuarioFiltroDto == null || usuarioFiltroDto.Id == 0)
             {
                 return BadRequest("Dados inválidos.");
             }
@@ -92,7 +92,7 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpDelete("excluirUsuario/{id}")]
-        public async Task<IActionResult> Excluir(Guid id)
+        public async Task<IActionResult> Excluir(long id)
         {
             var usuarioExistente = await _usuarioService.ObterPorIdAsync(id);
             if (usuarioExistente == null)

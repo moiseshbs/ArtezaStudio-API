@@ -29,12 +29,12 @@ namespace ArtezaStudio.Application.Services
             return _mapper.Map<CurtidaDto>(novaCurtida);
         }
 
-        public async Task<bool> ExcluirAsync(Guid id)
+        public async Task<bool> ExcluirAsync(long id)
         {
             return await _curtidaRepository.ExcluirAsync(id);
         }
 
-        public async Task<IEnumerable<CurtidaDto>> ListarPorPublicacaoIdAsync(Guid publicacaoId)
+        public async Task<IEnumerable<CurtidaDto>> ListarPorPublicacaoIdAsync(long publicacaoId)
         {
             var curtidas = await _curtidaRepository.ListarPorPublicacaoIdAsync(publicacaoId);
             return _mapper.Map<IEnumerable<CurtidaDto>>(curtidas);

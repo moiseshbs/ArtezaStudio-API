@@ -3,30 +3,35 @@ using System;
 using ArtezaStudio.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace ArtezaStudio.Infrastructure.Data.Migrations
+namespace ArtezaStudio.Infrastructure.Migrations
 {
     [DbContext(typeof(ArtezaContext))]
-    [Migration("20250616183304_VisualizacaoPublicacao")]
-    partial class VisualizacaoPublicacao
+    [Migration("20260129224607_InitialCreateWithLongIds")]
+    partial class InitialCreateWithLongIds
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.5")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
             modelBuilder.Entity("ArtezaStudio.Domain.Entities.Comentario", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Conteudo")
                         .IsRequired()
@@ -35,17 +40,17 @@ namespace ArtezaStudio.Infrastructure.Data.Migrations
                     b.Property<DateTime>("DataComentario")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid>("PublicacaoId")
-                        .HasColumnType("char(36)");
+                    b.Property<long>("PublicacaoId")
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid?>("PublicacaoId1")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("PublicacaoId1")
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid>("UsuarioId")
-                        .HasColumnType("char(36)");
+                    b.Property<long>("UsuarioId")
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid?>("UsuarioId1")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("UsuarioId1")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -57,26 +62,28 @@ namespace ArtezaStudio.Infrastructure.Data.Migrations
 
                     b.HasIndex("UsuarioId1");
 
-                    b.ToTable("comentarios");
+                    b.ToTable("Comentarios");
                 });
 
             modelBuilder.Entity("ArtezaStudio.Domain.Entities.Curtida", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("DataCurtida")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid>("PublicacaoId")
-                        .HasColumnType("char(36)");
+                    b.Property<long>("PublicacaoId")
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid?>("PublicacaoId1")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("PublicacaoId1")
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid>("UsuarioId")
-                        .HasColumnType("char(36)");
+                    b.Property<long>("UsuarioId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -86,14 +93,16 @@ namespace ArtezaStudio.Infrastructure.Data.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("curtidas");
+                    b.ToTable("Curtidas");
                 });
 
             modelBuilder.Entity("ArtezaStudio.Domain.Entities.Publicacao", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("DataPublicacao")
                         .HasColumnType("datetime(6)");
@@ -110,21 +119,55 @@ namespace ArtezaStudio.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid>("UsuarioId")
-                        .HasColumnType("char(36)");
+                    b.Property<long>("UsuarioId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("publicacoes");
+                    b.ToTable("Publicacoes");
+                });
+
+            modelBuilder.Entity("ArtezaStudio.Domain.Entities.PublicacaoTag", b =>
+                {
+                    b.Property<long>("PublicacaoId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("TagId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("PublicacaoId", "TagId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("PublicacaoTags");
+                });
+
+            modelBuilder.Entity("ArtezaStudio.Domain.Entities.Tag", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tags", (string)null);
                 });
 
             modelBuilder.Entity("ArtezaStudio.Domain.Entities.Usuario", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("DataCadastro")
                         .HasColumnType("datetime(6)");
@@ -157,28 +200,63 @@ namespace ArtezaStudio.Infrastructure.Data.Migrations
                     b.ToTable("usuarios", (string)null);
                 });
 
+            modelBuilder.Entity("ArtezaStudio.Domain.Entities.UsuarioSeguidor", b =>
+                {
+                    b.Property<long>("SeguidorId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("SeguidoId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("DataSeguimiento")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<long?>("UsuarioId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("UsuarioId1")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("SeguidorId", "SeguidoId");
+
+                    b.HasIndex("SeguidoId");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.HasIndex("UsuarioId1");
+
+                    b.ToTable("usuarioSeguidores");
+                });
+
             modelBuilder.Entity("ArtezaStudio.Domain.Entities.Visualizacao", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("DataVisualizacao")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid>("PublicacaoId")
-                        .HasColumnType("char(36)");
+                    b.Property<long>("PublicacaoId")
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid>("UsuarioId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("PublicacaoId1")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UsuarioId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PublicacaoId");
 
+                    b.HasIndex("PublicacaoId1");
+
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("visualizacoes");
+                    b.ToTable("Visualizacoes");
                 });
 
             modelBuilder.Entity("ArtezaStudio.Domain.Entities.Comentario", b =>
@@ -242,6 +320,52 @@ namespace ArtezaStudio.Infrastructure.Data.Migrations
                     b.Navigation("Usuario");
                 });
 
+            modelBuilder.Entity("ArtezaStudio.Domain.Entities.PublicacaoTag", b =>
+                {
+                    b.HasOne("ArtezaStudio.Domain.Entities.Publicacao", "Publicacao")
+                        .WithMany("PublicacaoTags")
+                        .HasForeignKey("PublicacaoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ArtezaStudio.Domain.Entities.Tag", "Tag")
+                        .WithMany("PublicacaoTags")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Publicacao");
+
+                    b.Navigation("Tag");
+                });
+
+            modelBuilder.Entity("ArtezaStudio.Domain.Entities.UsuarioSeguidor", b =>
+                {
+                    b.HasOne("ArtezaStudio.Domain.Entities.Usuario", "Seguido")
+                        .WithMany()
+                        .HasForeignKey("SeguidoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ArtezaStudio.Domain.Entities.Usuario", "Seguidor")
+                        .WithMany()
+                        .HasForeignKey("SeguidorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ArtezaStudio.Domain.Entities.Usuario", null)
+                        .WithMany("Seguidores")
+                        .HasForeignKey("UsuarioId");
+
+                    b.HasOne("ArtezaStudio.Domain.Entities.Usuario", null)
+                        .WithMany("Seguindo")
+                        .HasForeignKey("UsuarioId1");
+
+                    b.Navigation("Seguido");
+
+                    b.Navigation("Seguidor");
+                });
+
             modelBuilder.Entity("ArtezaStudio.Domain.Entities.Visualizacao", b =>
                 {
                     b.HasOne("ArtezaStudio.Domain.Entities.Publicacao", "Publicacao")
@@ -249,6 +373,10 @@ namespace ArtezaStudio.Infrastructure.Data.Migrations
                         .HasForeignKey("PublicacaoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("ArtezaStudio.Domain.Entities.Publicacao", null)
+                        .WithMany("Visualizacoes")
+                        .HasForeignKey("PublicacaoId1");
 
                     b.HasOne("ArtezaStudio.Domain.Entities.Usuario", "Usuario")
                         .WithMany()
@@ -266,11 +394,24 @@ namespace ArtezaStudio.Infrastructure.Data.Migrations
                     b.Navigation("Comentarios");
 
                     b.Navigation("Curtidas");
+
+                    b.Navigation("PublicacaoTags");
+
+                    b.Navigation("Visualizacoes");
+                });
+
+            modelBuilder.Entity("ArtezaStudio.Domain.Entities.Tag", b =>
+                {
+                    b.Navigation("PublicacaoTags");
                 });
 
             modelBuilder.Entity("ArtezaStudio.Domain.Entities.Usuario", b =>
                 {
                     b.Navigation("Comentarios");
+
+                    b.Navigation("Seguidores");
+
+                    b.Navigation("Seguindo");
                 });
 #pragma warning restore 612, 618
         }

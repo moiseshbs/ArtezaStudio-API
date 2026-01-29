@@ -36,7 +36,7 @@ namespace ArtezaStudio.Application.Services
             return _mapper.Map<TagDto>(novaTag);
         }
 
-        public async Task<bool> ExcluirAsync(Guid id)
+        public async Task<bool> ExcluirAsync(long id)
         {
             return await _tagRepository.ExcluirAsync(id);
         }

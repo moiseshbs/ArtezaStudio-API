@@ -28,19 +28,18 @@ namespace ArtezaStudio.Infrastructure.Repositories
 
         public async Task<Comentario> CriarAsync(Comentario comentario)
         {
-            comentario.Id = Guid.NewGuid();
             _context.Comentarios.Add(comentario);
             await _context.SaveChangesAsync();
 
             return comentario;
         }
 
-        public async Task<bool> ExcluirAsync(Guid id)
+        public async Task<bool> ExcluirAsync(long id)
         {
             return await _context.Comentarios.Where(c => c.Id == id).ExecuteDeleteAsync() > 0;
         }
 
-        public async Task<IEnumerable<Comentario>> ListarPorPublicacaoIdAsync(Guid publicacaoId)
+        public async Task<IEnumerable<Comentario>> ListarPorPublicacaoIdAsync(long publicacaoId)
         {
             return await _context.Comentarios
                 .Where(c => c.PublicacaoId == publicacaoId)
