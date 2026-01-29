@@ -73,15 +73,5 @@ namespace ArtezaStudio.Application.Services
         {
             return await _usuarioRepository.ExisteUsernameAsync(username);
         }
-
-        public async Task<bool> ValidarCredenciaisAsync(string email, string senha)
-        {
-            var usuario = await _usuarioRepository.ObterPorEmailAsync(email);
-
-            if (usuario == null)
-                return false;
-
-            return _senhaHashService.VerificarSenha(senha, usuario.Senha);
-        }
     }
 }

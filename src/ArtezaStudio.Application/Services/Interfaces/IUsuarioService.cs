@@ -13,6 +13,5 @@ namespace ArtezaStudio.Application.Services.Interfaces
         Task<bool> ExcluirAsync(long id);
         Task<bool> ExisteEmailAsync(string email);
         Task<bool> ExisteUsernameAsync(string username);
-        Task<bool> ValidarCredenciaisAsync(string email, string senha);
     }
 }

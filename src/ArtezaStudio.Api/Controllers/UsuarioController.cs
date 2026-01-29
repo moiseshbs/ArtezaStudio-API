@@ -106,48 +106,5 @@ namespace ArtezaStudio.Api.Controllers
             }
             return Ok(ApiResponse<bool>.Ok(true, "Usuário excluído com sucesso."));
         }
-
-        [HttpPost("cadastrarUsuario/")]
-        public async Task<IActionResult> Criar([FromBody] UsuarioFiltroDto usuarioFiltroDto)
-        {
-            if (usuarioFiltroDto == null)
-            {
-                return BadRequest("Dados inválidos.");
-            }
-
-            var existeEmail = await _usuarioService.ExisteEmailAsync(usuarioFiltroDto.Email);
-            if (existeEmail)
-            {
-                return BadRequest("Já existe um usuário com este email.");
-            }
-
-            var existeUsername = await _usuarioService.ExisteUsernameAsync(usuarioFiltroDto.Username);
-            if (existeUsername)
-            {
-                return BadRequest("Já existe um usuário com este username.");
-            }
-
-            var novoUsuario = await _usuarioService.CriarAsync(usuarioFiltroDto);
-            return Ok(ApiResponse<UsuarioDto>.Ok(novoUsuario, "Usuário criado com sucesso"));
-        }
-
-        [HttpPost("login/")]
-        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
-        {
-            if (loginDto == null || string.IsNullOrWhiteSpace(loginDto.Email) || string.IsNullOrWhiteSpace(loginDto.Senha))
-            {
-                return BadRequest("Email e senha são obrigatórios.");
-            }
-
-            var credenciaisValidas = await _usuarioService.ValidarCredenciaisAsync(loginDto.Email, loginDto.Senha);
-
-            if (!credenciaisValidas)
-            {
-                return Unauthorized("Email ou senha inválidos.");
-            }
-
-            var usuario = await _usuarioService.ObterPorEmailAsync(loginDto.Email);
-            return Ok(ApiResponse<UsuarioDto>.Ok(usuario, "Login realizado com sucesso."));
-        }
     }
 }
