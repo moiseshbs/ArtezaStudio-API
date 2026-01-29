@@ -25,7 +25,7 @@ namespace ArtezaStudio.Api.Controllers
 
         [HttpGet("buscarPorId/{id}")]
         public async Task<IActionResult> ObterPorId(long id)
-        { 
+        {
             var usuario = await _usuarioService.ObterPorIdAsync(id);
             if (usuario == null)
             {
@@ -69,7 +69,7 @@ namespace ArtezaStudio.Api.Controllers
                 return NotFound("Usuário não encontrado.");
             }
 
-            if(usuarioFiltroDto.Email.Equals(usuarioExistente.Email) == false)
+            if (usuarioFiltroDto.Email.Equals(usuarioExistente.Email) == false)
             {
                 var existeEmail = await _usuarioService.ExisteEmailAsync(usuarioFiltroDto.Email);
                 if (existeEmail)
@@ -78,7 +78,7 @@ namespace ArtezaStudio.Api.Controllers
                 }
             }
 
-            if(usuarioFiltroDto.Username.Equals(usuarioExistente.Username) == false)
+            if (usuarioFiltroDto.Username.Equals(usuarioExistente.Username) == false)
             {
                 var existeUsername = await _usuarioService.ExisteUsernameAsync(usuarioFiltroDto.Username);
                 if (existeUsername)
@@ -129,6 +129,25 @@ namespace ArtezaStudio.Api.Controllers
 
             var novoUsuario = await _usuarioService.CriarAsync(usuarioFiltroDto);
             return Ok(ApiResponse<UsuarioDto>.Ok(novoUsuario, "Usuário criado com sucesso"));
+        }
+
+        [HttpPost("login/")]
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        {
+            if (loginDto == null || string.IsNullOrWhiteSpace(loginDto.Email) || string.IsNullOrWhiteSpace(loginDto.Senha))
+            {
+                return BadRequest("Email e senha são obrigatórios.");
+            }
+
+            var credenciaisValidas = await _usuarioService.ValidarCredenciaisAsync(loginDto.Email, loginDto.Senha);
+
+            if (!credenciaisValidas)
+            {
+                return Unauthorized("Email ou senha inválidos.");
+            }
+
+            var usuario = await _usuarioService.ObterPorEmailAsync(loginDto.Email);
+            return Ok(ApiResponse<UsuarioDto>.Ok(usuario, "Login realizado com sucesso."));
         }
     }
 }

@@ -26,6 +26,9 @@ builder.Services.AddScoped<ITagRepository, TagRepository>();
 builder.Services.AddScoped<ITagService, TagService>();
 builder.Services.AddScoped<IUsuarioSeguidorRepository, UsuarioSeguidorRepository>();
 builder.Services.AddScoped<IUsuarioSeguidorService, UsuarioSeguidorService>();
+
+builder.Services.AddSingleton<ISenhaHashService, SenhaHashService>();
+
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
