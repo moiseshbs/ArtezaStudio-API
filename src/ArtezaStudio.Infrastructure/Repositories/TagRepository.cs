@@ -16,13 +16,12 @@ namespace ArtezaStudio.Infrastructure.Repositories
 
         public async Task<Tag> CriarAsync(Tag tag)
         {
-            tag.Id = Guid.NewGuid();
             _context.Tags.Add(tag);
             await _context.SaveChangesAsync();
             return tag;
         }
 
-        public async Task<bool> ExcluirAsync(Guid id)
+        public async Task<bool> ExcluirAsync(long id)
         {
             return await _context.Tags.Where(t => t.Id == id).ExecuteDeleteAsync() > 0;
         }

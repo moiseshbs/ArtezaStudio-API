@@ -15,14 +15,13 @@ namespace ArtezaStudio.Infrastructure.Repositories
 
         public async Task<Visualizacao> CriarAsync(Visualizacao visualizacao)
         {
-            visualizacao.Id = Guid.NewGuid();
             _context.Visualizacoes.Add(visualizacao);
             await _context.SaveChangesAsync();
 
             return visualizacao;
         }
 
-        public async Task<IEnumerable<Visualizacao>> ListarPorPublicacaoIdAsync(Guid publicacaoId)
+        public async Task<IEnumerable<Visualizacao>> ListarPorPublicacaoIdAsync(long publicacaoId)
         {
             return await _context.Visualizacoes
                 .Where(v => v.PublicacaoId == publicacaoId)

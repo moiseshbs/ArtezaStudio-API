@@ -17,13 +17,13 @@ namespace ArtezaStudio.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<UsuarioSeguidorDto>> ListarSeguidoresAsync(Guid usuarioId)
+        public async Task<IEnumerable<UsuarioSeguidorDto>> ListarSeguidoresAsync(long usuarioId)
         {
             var seguidores = await _usuarioSeguidorRepository.ListarSeguidoresAsync(usuarioId);
             return _mapper.Map<IEnumerable<UsuarioSeguidorDto>>(seguidores);
         }
 
-        public async Task<IEnumerable<UsuarioSeguidorDto>> ListarSeguindoAsync(Guid usuarioId)
+        public async Task<IEnumerable<UsuarioSeguidorDto>> ListarSeguindoAsync(long usuarioId)
         {
             var seguindo = await _usuarioSeguidorRepository.ListarSeguindoAsync(usuarioId);
             return _mapper.Map<IEnumerable<UsuarioSeguidorDto>>(seguindo);

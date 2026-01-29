@@ -4,9 +4,9 @@ namespace ArtezaStudio.Domain.Interfaces
 {
     public interface IComentarioRepository
     {
-        Task<IEnumerable<Comentario>> ListarPorPublicacaoIdAsync(Guid publicacaoId);
+        Task<IEnumerable<Comentario>> ListarPorPublicacaoIdAsync(long publicacaoId);
         Task<Comentario> CriarAsync(Comentario comentario);
         Task<Comentario> AtualizarAsync(Comentario comentario);
-        Task<bool> ExcluirAsync(Guid id);
+        Task<bool> ExcluirAsync(long id);
     }
 }

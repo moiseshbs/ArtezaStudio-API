@@ -26,7 +26,7 @@ namespace ArtezaStudio.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Publicacao>> ListarPorUsuarioIdAsync(Guid usuarioId)
+        public async Task<IEnumerable<Publicacao>> ListarPorUsuarioIdAsync(long usuarioId)
         {
             return await _context.Publicacoes
                 .Where(p => p.UsuarioId == usuarioId)
@@ -39,7 +39,7 @@ namespace ArtezaStudio.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Publicacao>> ListarPorTagIdAsync(Guid tagId)
+        public async Task<IEnumerable<Publicacao>> ListarPorTagIdAsync(long tagId)
         {
             return await _context.Publicacoes
                 .Where(p => p.PublicacaoTags.Any(pt => pt.TagId == tagId))
@@ -67,13 +67,12 @@ namespace ArtezaStudio.Infrastructure.Repositories
 
         public async Task<Publicacao> CriarAsync(Publicacao publicacao)
         {
-            publicacao.Id = Guid.NewGuid();
             _context.Publicacoes.Add(publicacao);
             await _context.SaveChangesAsync();
             return publicacao;
         }
 
-        public async Task<Publicacao> ObterPorIdAsync(Guid id)
+        public async Task<Publicacao> ObterPorIdAsync(long id)
         {
             return await _context.Publicacoes
                 .Include(p => p.Usuario)
@@ -85,7 +84,7 @@ namespace ArtezaStudio.Infrastructure.Repositories
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<bool> ExcluirAsync(Guid id)
+        public async Task<bool> ExcluirAsync(long id)
         {
             return await _context.Publicacoes.Where(p => p.Id == id).ExecuteDeleteAsync() > 0;
         }

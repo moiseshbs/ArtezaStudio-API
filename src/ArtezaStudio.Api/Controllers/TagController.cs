@@ -43,7 +43,7 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpDelete("excluirTag/{id}")]
-        public async Task<IActionResult> Excluir(Guid id)
+        public async Task<IActionResult> Excluir(long id)
         {
             var resultado = await _tagService.ExcluirAsync(id);
             if (!resultado)

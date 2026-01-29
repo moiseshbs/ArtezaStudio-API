@@ -22,13 +22,13 @@ namespace ArtezaStudio.Application.Services
             return _mapper.Map<IEnumerable<PublicacaoDto>>(publicacoes);
         }
 
-        public async Task<IEnumerable<PublicacaoDto>> ListarPorUsuarioIdAsync(Guid usuarioId)
+        public async Task<IEnumerable<PublicacaoDto>> ListarPorUsuarioIdAsync(long usuarioId)
         {
             var publicacoes = await _publicacaoRepository.ListarPorUsuarioIdAsync(usuarioId);
             return _mapper.Map<IEnumerable<PublicacaoDto>>(publicacoes);
         }
 
-        public async Task<IEnumerable<PublicacaoDto>> ListarPorTagIdAsync(Guid tagId)
+        public async Task<IEnumerable<PublicacaoDto>> ListarPorTagIdAsync(long tagId)
         {
             var publicacoes = await _publicacaoRepository.ListarPorTagIdAsync(tagId);
             return _mapper.Map<IEnumerable<PublicacaoDto>>(publicacoes);
@@ -65,13 +65,13 @@ namespace ArtezaStudio.Application.Services
             return _mapper.Map<PublicacaoDto>(novaPublicacao);
         }
 
-        public async Task<PublicacaoDto> ObterPorIdAsync(Guid id)
+        public async Task<PublicacaoDto> ObterPorIdAsync(long id)
         {
             var publicacao = await _publicacaoRepository.ObterPorIdAsync(id);
             return _mapper.Map<PublicacaoDto>(publicacao);
         }
 
-        public async Task<bool> ExcluirAsync(Guid id)
+        public async Task<bool> ExcluirAsync(long id)
         {
             return await _publicacaoRepository.ExcluirAsync(id);
         }

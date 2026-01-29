@@ -9,7 +9,7 @@ namespace ArtezaStudio.Application.Dtos.Publicacao
 {
     public class PublicacaoDto
     {
-        public Guid Id { get; set; }
+        public long Id { get; set; }
         public string Titulo { get; set; }
         public string Descricao { get; set; }
         public string ImagemUrl { get; set; }
@@ -23,7 +23,7 @@ namespace ArtezaStudio.Application.Dtos.Publicacao
 
         public ICollection<PublicacaoTagDto>? PublicacaoTags { get; set; }
 
-        public Guid UsuarioId { get; set; }
+        public long UsuarioId { get; set; }
         public UsuarioDto Usuario { get; set; }
     }
 }

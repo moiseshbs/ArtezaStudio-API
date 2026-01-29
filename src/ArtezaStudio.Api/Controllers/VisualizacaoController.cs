@@ -17,7 +17,7 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpGet("listarVisualizacoes/{idPublicacao}")]
-        public async Task<IActionResult> ListarPorPublicacaoIdAsync(Guid idPublicacao)
+        public async Task<IActionResult> ListarPorPublicacaoIdAsync(long idPublicacao)
         {
             var visualizacoes = await _visualizacaoService.ListarPorPublicacaoIdAsync(idPublicacao);
             return Ok(visualizacoes);

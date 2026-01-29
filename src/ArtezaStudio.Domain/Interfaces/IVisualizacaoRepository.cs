@@ -4,7 +4,7 @@ namespace ArtezaStudio.Domain.Interfaces
 {
     public interface IVisualizacaoRepository
     {
-        Task<IEnumerable<Visualizacao>> ListarPorPublicacaoIdAsync(Guid publicacaoId);
+        Task<IEnumerable<Visualizacao>> ListarPorPublicacaoIdAsync(long publicacaoId);
         Task<Visualizacao> CriarAsync(Visualizacao visualizacao);
     }
 }

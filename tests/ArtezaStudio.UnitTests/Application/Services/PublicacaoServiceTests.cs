@@ -35,7 +35,6 @@ namespace ArtezaStudio.UnitTests.Application.Services
             repo.Setup(r => r.CriarAsync(It.IsAny<Publicacao>()))
                 .ReturnsAsync(new Publicacao
                 {
-                    Id = Guid.NewGuid(),
                     Titulo = publicacaoFiltroDto.Titulo,
                     Descricao = publicacaoFiltroDto.Descricao,
                     ImagemUrl = publicacaoFiltroDto.ImagemUrl

@@ -7,6 +7,6 @@ namespace ArtezaStudio.Application.Services.Interfaces
         Task<IEnumerable<TagDto>> ListarAsync();
         Task<IEnumerable<TagDto>> ListarPorNomeAsync(string tagNome);
         Task<TagDto> CriarAsync(TagFiltroDto tagFiltroDto);
-        Task<bool> ExcluirAsync(Guid id);
+        Task<bool> ExcluirAsync(long id);
     }
 }

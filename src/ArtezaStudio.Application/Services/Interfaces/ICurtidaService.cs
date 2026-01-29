@@ -4,8 +4,8 @@ namespace ArtezaStudio.Application.Services.Interfaces
 {
     public interface ICurtidaService
     {
-        Task<IEnumerable<CurtidaDto>> ListarPorPublicacaoIdAsync(Guid publicacaoId);
+        Task<IEnumerable<CurtidaDto>> ListarPorPublicacaoIdAsync(long publicacaoId);
         Task<CurtidaDto> CriarAsync(CurtidaFiltroDto curtidaDto);
-        Task<bool> ExcluirAsync(Guid id);
+        Task<bool> ExcluirAsync(long id);
     }
 }

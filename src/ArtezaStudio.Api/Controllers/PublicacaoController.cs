@@ -24,14 +24,14 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpGet("listarPublicacoesPorUsuario/{usuarioId}")]
-        public async Task<IActionResult> ListarPorUsuario(Guid usuarioId)
+        public async Task<IActionResult> ListarPorUsuario(long usuarioId)
         {
             var publicacoes = await _publicacaoService.ListarPorUsuarioIdAsync(usuarioId);
             return Ok(publicacoes);
         }
 
         [HttpGet("listarPublicacoesPorTag/{tagId}")]
-        public async Task<IActionResult> ListarPorTag(Guid tagId)
+        public async Task<IActionResult> ListarPorTag(long tagId)
         {
             var publicacoes = await _publicacaoService.ListarPorTagIdAsync(tagId);
             return Ok(publicacoes);
@@ -61,7 +61,7 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpGet("obterPublicacao/{id}")]
-        public async Task<IActionResult> ObterPorId(Guid id)
+        public async Task<IActionResult> ObterPorId(long id)
         {
             var publicacao = await _publicacaoService.ObterPorIdAsync(id);
             if (publicacao == null)
@@ -72,7 +72,7 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpDelete("excluirPublicacao/{id}")]
-        public async Task<IActionResult> Excluir(Guid id)
+        public async Task<IActionResult> Excluir(long id)
         {
             var resultado = await _publicacaoService.ExcluirAsync(id);
             if (!resultado)

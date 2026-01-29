@@ -2,11 +2,11 @@
 {
     public class ComentarioFiltroDto
     {
-        public Guid Id { get; set; }
+        public long Id { get; set; }
         public string Conteudo { get; set; }
 
-        public Guid PublicacaoId { get; set; }
+        public long PublicacaoId { get; set; }
 
-        public Guid UsuarioId { get; set; }
+        public long UsuarioId { get; set; }
     }
 }

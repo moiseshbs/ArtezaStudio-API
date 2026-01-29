@@ -29,7 +29,7 @@ namespace ArtezaStudio.Application.Services
             return _mapper.Map<VisualizacaoDto>(novaVisualizacao);
         }
 
-        public async Task<IEnumerable<VisualizacaoDto>> ListarPorPublicacaoIdAsync(Guid publicacaoId)
+        public async Task<IEnumerable<VisualizacaoDto>> ListarPorPublicacaoIdAsync(long publicacaoId)
         {
             var visualizacoes = await _visualizacaoRepository.ListarPorPublicacaoIdAsync(publicacaoId);
             return _mapper.Map<IEnumerable<VisualizacaoDto>>(visualizacoes);

@@ -13,7 +13,7 @@ namespace ArtezaStudio.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<UsuarioSeguidor>> ListarSeguidoresAsync(Guid usuarioId)
+        public async Task<IEnumerable<UsuarioSeguidor>> ListarSeguidoresAsync(long usuarioId)
         {
             return await _context.usuarioSeguidores
                 .Where(us => us.SeguidoId == usuarioId)
@@ -21,7 +21,7 @@ namespace ArtezaStudio.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<UsuarioSeguidor>> ListarSeguindoAsync(Guid usuarioId)
+        public async Task<IEnumerable<UsuarioSeguidor>> ListarSeguindoAsync(long usuarioId)
         {
             return await _context.usuarioSeguidores
                 .Where(us => us.SeguidorId == usuarioId)
@@ -36,7 +36,7 @@ namespace ArtezaStudio.Infrastructure.Repositories
             return usuarioSeguidor;
         }
 
-        public async Task<bool> UnfollowAsync(Guid seguidorId, Guid seguidoId)
+        public async Task<bool> UnfollowAsync(long seguidorId, long seguidoId)
         {
             return await _context.usuarioSeguidores
                 .Where(us => us.SeguidorId == seguidorId && us.SeguidoId == seguidoId)

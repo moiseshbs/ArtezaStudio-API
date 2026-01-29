@@ -2,7 +2,7 @@
 {
     public class SeguirUsuarioDto
     {
-        public Guid SeguidorId { get; set; }
-        public Guid SeguidoId { get; set; }
+        public long SeguidorId { get; set; }
+        public long SeguidoId { get; set; }
     }
 }

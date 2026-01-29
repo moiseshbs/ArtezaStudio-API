@@ -17,7 +17,7 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpGet("listarCurtidas/{idPublicacao}")]
-        public async Task<IActionResult> ListarPorPublicacaoIdAsync(Guid idPublicacao)
+        public async Task<IActionResult> ListarPorPublicacaoIdAsync(long idPublicacao)
         {
             var curtidas = await _curtidaService.ListarPorPublicacaoIdAsync(idPublicacao);
             return Ok(curtidas);
@@ -34,7 +34,7 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpDelete("excluirCurtida/{id}")]
-        public async Task<IActionResult> ExcluirAsync(Guid id)
+        public async Task<IActionResult> ExcluirAsync(long id)
         {
             var excluido = await _curtidaService.ExcluirAsync(id);
             if (!excluido)

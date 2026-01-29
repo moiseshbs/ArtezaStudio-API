@@ -19,13 +19,12 @@ namespace ArtezaStudio.Infrastructure.Repositories
 
         public async Task<Usuario> CriarAsync(Usuario usuario)
         {
-            usuario.Id = Guid.NewGuid();
             _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
             return usuario;
         }
 
-        public async Task<Usuario> ObterPorIdAsync(Guid id)
+        public async Task<Usuario> ObterPorIdAsync(long id)
         {
             return await _context.Usuarios.FindAsync(id);
         }
@@ -58,7 +57,7 @@ namespace ArtezaStudio.Infrastructure.Repositories
             return await _context.SaveChangesAsync().ContinueWith(t => procuraUsuario);
         }
 
-        public async Task<bool> ExcluirAsync(Guid id)
+        public async Task<bool> ExcluirAsync(long id)
         {
             return await _context.Usuarios.Where(u => u.Id == id).ExecuteDeleteAsync() > 0;
         }

@@ -2,7 +2,7 @@
 {
     public class PublicacaoTagFiltroDto
     {
-        public Guid PublicacaoId { get; set; }
-        public List<Guid> TagId { get; set; }
+        public long PublicacaoId { get; set; }
+        public List<long> TagId { get; set; }
     }
 }

@@ -5,13 +5,13 @@ namespace ArtezaStudio.Application.Dtos.Visualizacao
 {
     public class VisualizacaoDto
     {
-        public Guid Id { get; set; }
+        public long Id { get; set; }
         public DateTime DataVisualizacao { get; set; }
 
-        public Guid PublicacaoId { get; set; }
+        public long PublicacaoId { get; set; }
         public PublicacaoDto publicacao { get; set; }
 
-        public Guid UsuarioId { get; set; }
+        public long UsuarioId { get; set; }
         public UsuarioDto Usuario { get; set; }
     }
 }

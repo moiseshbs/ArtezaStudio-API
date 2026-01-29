@@ -5,14 +5,14 @@ namespace ArtezaStudio.Application.Dtos.Comentario
 {
     public class ComentarioDto
     {
-        public Guid Id { get; set; }
+        public long Id { get; set; }
         public string Conteudo { get; set; }
         public DateTime DataComentario { get; set; }
 
-        public Guid PublicacaoId { get; set; }
+        public long PublicacaoId { get; set; }
         public PublicacaoDto Publicacao { get; set; }
         
-        public Guid UsuarioId { get; set; }
+        public long UsuarioId { get; set; }
         public UsuarioDto Usuario { get; set; }
     }
 }

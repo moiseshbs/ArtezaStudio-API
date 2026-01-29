@@ -2,21 +2,18 @@
 {
     public class Publicacao
     {
-        public Guid Id { get; set; }
+        public long Id { get; set; }
         public string Titulo { get; set; } = string.Empty;
         public string Descricao { get; set; } = string.Empty;
         public string ImagemUrl { get; set; } = string.Empty;
         public DateTime DataPublicacao { get; set; } = DateTime.UtcNow;
 
         public ICollection<Comentario> Comentarios { get; set; } = new List<Comentario>();
-
         public ICollection<Curtida> Curtidas { get; set; } = new List<Curtida>();
-
         public ICollection<Visualizacao> Visualizacoes { get; set; } = new List<Visualizacao>();
-
         public ICollection<PublicacaoTag> PublicacaoTags { get; set; } = new List<PublicacaoTag>();
 
-        public Guid UsuarioId { get; set; }
+        public long UsuarioId { get; set; }
         public Usuario Usuario { get; set; } = new();
     }
 }
