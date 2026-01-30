@@ -14,6 +14,6 @@
         public ICollection<PublicacaoTag> PublicacaoTags { get; set; } = new List<PublicacaoTag>();
 
         public long UsuarioId { get; set; }
-        public Usuario Usuario { get; set; } = new();
+        public Usuario? Usuario { get; set; }
     }
 }

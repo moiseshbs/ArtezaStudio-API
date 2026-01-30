@@ -14,55 +14,73 @@ namespace ArtezaStudio.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Publicacao>> ListarAsync()
+        private IQueryable<Publicacao> GetBaseQuery()
         {
-            return await _context.Publicacoes
+            return _context.Publicacoes
+                .AsNoTracking()
+                .AsSplitQuery()
                 .Include(p => p.Usuario)
                 .Include(p => p.Comentarios)
                 .Include(p => p.Curtidas)
                 .Include(p => p.Visualizacoes)
                 .Include(p => p.PublicacaoTags)
                     .ThenInclude(pt => pt.Tag)
-                .ToListAsync();
+                .OrderByDescending(p => p.DataPublicacao);
         }
 
-        public async Task<IEnumerable<Publicacao>> ListarPorUsuarioIdAsync(long usuarioId)
+        public async Task<(IEnumerable<Publicacao> Items, int TotalCount)> ListarAsync(int page, int pageSize)
         {
-            return await _context.Publicacoes
-                .Where(p => p.UsuarioId == usuarioId)
-                .Include(p => p.Usuario)
-                .Include(p => p.Comentarios)
-                .Include(p => p.Curtidas)
-                .Include(p => p.Visualizacoes)
-                .Include(p => p.PublicacaoTags)
-                    .ThenInclude(pt => pt.Tag)
+            var query = GetBaseQuery();
+
+            var totalCount = await _context.Publicacoes.CountAsync();
+            var items = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
+
+            return (items, totalCount);
         }
 
-        public async Task<IEnumerable<Publicacao>> ListarPorTagIdAsync(long tagId)
+        public async Task<(IEnumerable<Publicacao> Items, int TotalCount)> ListarPorUsuarioIdAsync(long usuarioId, int page, int pageSize)
         {
-            return await _context.Publicacoes
-                .Where(p => p.PublicacaoTags.Any(pt => pt.TagId == tagId))
-                .Include(p => p.Usuario)
-                .Include(p => p.Comentarios)
-                .Include(p => p.Curtidas)
-                .Include(p => p.Visualizacoes)
-                .Include(p => p.PublicacaoTags)
-                    .ThenInclude(pt => pt.Tag)
+            var query = GetBaseQuery().Where(p => p.UsuarioId == usuarioId);
+
+            var totalCount = await _context.Publicacoes.CountAsync(p => p.UsuarioId == usuarioId);
+            var items = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
+
+            return (items, totalCount);
         }
 
-        public async Task<IEnumerable<Publicacao>> ListarPorTermoAsync(string termo)
+        public async Task<(IEnumerable<Publicacao> Items, int TotalCount)> ListarPorTagIdAsync(long tagId, int page, int pageSize)
         {
-            return await _context.Publicacoes
-                .Where(p => p.Titulo.ToLower().Contains(termo.ToLower()) || p.Descricao.ToLower().Contains(termo.ToLower()))
-                .Include(p => p.Usuario)
-                .Include(p => p.Comentarios)
-                .Include(p => p.Curtidas)
-                .Include(p => p.Visualizacoes)
-                .Include(p => p.PublicacaoTags)
-                    .ThenInclude(pt => pt.Tag)
+            var query = GetBaseQuery().Where(p => p.PublicacaoTags.Any(pt => pt.TagId == tagId));
+
+            var totalCount = await _context.Publicacoes.CountAsync(p => p.PublicacaoTags.Any(pt => pt.TagId == tagId));
+            var items = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
+
+            return (items, totalCount);
+        }
+
+        public async Task<(IEnumerable<Publicacao> Items, int TotalCount)> ListarPorTermoAsync(string termo, int page, int pageSize)
+        {
+            var termoLower = termo.ToLower();
+            var query = GetBaseQuery()
+                .Where(p => p.Titulo.ToLower().Contains(termoLower) || p.Descricao.ToLower().Contains(termoLower));
+
+            var totalCount = await _context.Publicacoes
+                .CountAsync(p => p.Titulo.ToLower().Contains(termoLower) || p.Descricao.ToLower().Contains(termoLower));
+            var items = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (items, totalCount);
         }
 
         public async Task<Publicacao> CriarAsync(Publicacao publicacao)
@@ -72,16 +90,9 @@ namespace ArtezaStudio.Infrastructure.Repositories
             return publicacao;
         }
 
-        public async Task<Publicacao> ObterPorIdAsync(long id)
+        public async Task<Publicacao?> ObterPorIdAsync(long id)
         {
-            return await _context.Publicacoes
-                .Include(p => p.Usuario)
-                .Include(p => p.Comentarios)
-                .Include(p => p.Curtidas)
-                .Include(p => p.Visualizacoes)
-                .Include(p => p.PublicacaoTags)
-                    .ThenInclude(pt => pt.Tag)
-                .FirstOrDefaultAsync(p => p.Id == id);
+            return await GetBaseQuery().FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<bool> ExcluirAsync(long id)
@@ -91,14 +102,14 @@ namespace ArtezaStudio.Infrastructure.Repositories
 
         public async Task<Publicacao> AtualizarAsync(Publicacao publicacao)
         {
-            var procuraPublicacao = _context.Publicacoes.Find(publicacao.Id);
-            if (procuraPublicacao == null)
-                throw new KeyNotFoundException("Publicação não encontrada.");
+            var procuraPublicacao = await _context.Publicacoes.FindAsync(publicacao.Id) 
+                ?? throw new KeyNotFoundException("Publicação não encontrada.");
 
             procuraPublicacao.Titulo = publicacao.Titulo;
             procuraPublicacao.Descricao = publicacao.Descricao;
 
-            return await _context.SaveChangesAsync().ContinueWith(t => procuraPublicacao);
+            await _context.SaveChangesAsync();
+            return procuraPublicacao;
         }
 
         public async Task AdicionarPublicacaoTagAsync(PublicacaoTag publicacaoTag)
