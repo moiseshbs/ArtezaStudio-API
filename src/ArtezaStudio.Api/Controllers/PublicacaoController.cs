@@ -2,6 +2,7 @@
 using ArtezaStudio.Api.Responses;
 using ArtezaStudio.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ArtezaStudio.Api.Controllers
 {
@@ -49,6 +50,7 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpPost("criarPublicacao/")]
+        [Authorize]
         public async Task<IActionResult> Criar([FromBody] PublicacaoFiltroDto publicacaoFiltroDto)
         {
             if (publicacaoFiltroDto == null)
@@ -72,6 +74,7 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpDelete("excluirPublicacao/{id}")]
+        [Authorize]
         public async Task<IActionResult> Excluir(long id)
         {
             var resultado = await _publicacaoService.ExcluirAsync(id);
@@ -83,6 +86,7 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpPut("atualizarPublicacao/")]
+        [Authorize]
         public async Task<IActionResult> Atualizar([FromBody] PublicacaoFiltroDto publicacaoFiltroDto)
         {
             if (publicacaoFiltroDto == null)

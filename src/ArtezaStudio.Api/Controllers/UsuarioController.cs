@@ -18,7 +18,6 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpGet("listarUsuarios/")]
-        [Authorize]
         public async Task<IActionResult> Listar()
         {
             var usuarios = await _usuarioService.ListarAsync();
@@ -59,6 +58,7 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpPut("atualizarUsuario/")]
+        [Authorize]
         public async Task<IActionResult> Atualizar([FromBody] UsuarioFiltroDto usuarioFiltroDto)
         {
             if (usuarioFiltroDto == null || usuarioFiltroDto.Id == 0)
@@ -94,6 +94,7 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpDelete("excluirUsuario/{id}")]
+        [Authorize]
         public async Task<IActionResult> Excluir(long id)
         {
             var usuarioExistente = await _usuarioService.ObterPorIdAsync(id);
