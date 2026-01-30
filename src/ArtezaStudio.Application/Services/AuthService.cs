@@ -11,12 +11,14 @@ namespace ArtezaStudio.Application.Services
     {
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly ISenhaHashService _senhaHashService;
+        private readonly IJwtTokenService _jwtTokenService;
         private readonly IMapper _mapper;
 
-        public AuthService(IUsuarioRepository usuarioRepository, ISenhaHashService senhaHashService, IMapper mapper)
+        public AuthService(IUsuarioRepository usuarioRepository, ISenhaHashService senhaHashService, IJwtTokenService jwtTokenService, IMapper mapper)
         {
             _usuarioRepository = usuarioRepository;
             _senhaHashService = senhaHashService;
+            _jwtTokenService = jwtTokenService;
             _mapper = mapper;
         }
 
@@ -32,13 +34,14 @@ namespace ArtezaStudio.Application.Services
             if (!senhaValida)
                 throw new UnauthorizedAccessException("Email ou senha inválidos.");
 
+            var token = _jwtTokenService.GerarToken(usuario);
             var usuarioDto = _mapper.Map<UsuarioDto>(usuario);
 
             return new LoginResponseDto
             {
                 Usuario = usuarioDto,
-                Token = "temp-token", // Substituir por JWT real depois
-                ExpiresAt = DateTime.UtcNow.AddHours(24)
+                Token = token,
+                ExpiresAt = DateTime.UtcNow.AddMinutes(60)
             };
         }
 
@@ -65,13 +68,14 @@ namespace ArtezaStudio.Application.Services
 
             var usuarioCriado = await _usuarioRepository.CriarAsync(novoUsuario);
 
+            var token = _jwtTokenService.GerarToken(usuarioCriado);
             var usuarioDto = _mapper.Map<UsuarioDto>(usuarioCriado);
 
             return new LoginResponseDto
             {
                 Usuario = usuarioDto,
-                Token = "temp-token", // Substituir por JWT real depois
-                ExpiresAt = DateTime.UtcNow.AddHours(24)
+                Token = token,
+                ExpiresAt = DateTime.UtcNow.AddMinutes(60)
             };
         }
     }

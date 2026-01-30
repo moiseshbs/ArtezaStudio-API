@@ -2,6 +2,7 @@
 using ArtezaStudio.Api.Responses;
 using ArtezaStudio.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ArtezaStudio.Api.Controllers
 {
@@ -17,6 +18,7 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpGet("listarUsuarios/")]
+        [Authorize]
         public async Task<IActionResult> Listar()
         {
             var usuarios = await _usuarioService.ListarAsync();
