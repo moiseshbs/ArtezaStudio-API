@@ -1,7 +1,10 @@
+using System.Net;
 using ArtezaStudio.Application.Dtos.Auth;
 using ArtezaStudio.Application.Dtos.Usuario;
+using ArtezaStudio.Application.Exceptions;
 using ArtezaStudio.Application.Services.Interfaces;
 using ArtezaStudio.Domain.Entities;
+using ArtezaStudio.Domain.Enums;
 using ArtezaStudio.Domain.Interfaces;
 using AutoMapper;
 
@@ -27,12 +30,12 @@ namespace ArtezaStudio.Application.Services
             var usuario = await _usuarioRepository.ObterPorEmailAsync(loginRequest.Email);
 
             if (usuario == null)
-                throw new UnauthorizedAccessException("Email ou senha inválidos.");
+                throw new ArtezaException("Email ou senha inválidos.", ErrorCode.Autenticacao.CredenciaisInvalidas, HttpStatusCode.Unauthorized);
 
             var senhaValida = _senhaHashService.VerificarSenha(loginRequest.Senha, usuario.Senha);
             
             if (!senhaValida)
-                throw new UnauthorizedAccessException("Email ou senha inválidos.");
+                throw new ArtezaException("Email ou senha inválidos.", ErrorCode.Autenticacao.CredenciaisInvalidas, HttpStatusCode.Unauthorized);
 
             var token = _jwtTokenService.GerarToken(usuario);
             var usuarioDto = _mapper.Map<UsuarioDto>(usuario);
@@ -49,12 +52,11 @@ namespace ArtezaStudio.Application.Services
         {
             var emailExiste = await _usuarioRepository.ExisteEmailAsync(registroRequest.Email);
             if (emailExiste)
-                throw new InvalidOperationException("Já existe um usuário com este email.");
+                throw new ArtezaException("Já existe um usuário com este email.", ErrorCode.Usuario.EmailJaExiste, HttpStatusCode.BadRequest);
 
             var usernameExiste = await _usuarioRepository.ExisteUsernameAsync(registroRequest.Username);
             if (usernameExiste)
-                throw new InvalidOperationException("Já existe um usuário com este username.");
-
+                throw new ArtezaException("Já existe um usuário com este username.", ErrorCode.Usuario.UsernameJaExiste, HttpStatusCode.BadRequest);
             var novoUsuario = new Usuario
             {
                 Nome = registroRequest.Nome,
