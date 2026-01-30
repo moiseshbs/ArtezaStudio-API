@@ -1,5 +1,6 @@
 ﻿using ArtezaStudio.Application.Dtos.Usuario;
 using ArtezaStudio.Application.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ArtezaStudio.Api.Controllers
@@ -30,6 +31,7 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpPost("seguirUsuario/")]
+        [Authorize]
         public async Task<IActionResult> SeguirUsuario([FromBody] SeguirUsuarioDto seguirUsuarioDto)
         {
             if (seguirUsuarioDto == null)
@@ -41,6 +43,7 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpDelete("unfollow/")]
+        [Authorize]
         public async Task<IActionResult> Unfollow([FromBody] SeguirUsuarioDto seguirUsuarioDto)
         {
             if (seguirUsuarioDto == null)

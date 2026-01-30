@@ -2,6 +2,7 @@
 using ArtezaStudio.Api.Responses;
 using ArtezaStudio.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ArtezaStudio.Api.Controllers
 {
@@ -24,6 +25,7 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpPost("criarVisualizacao/")]
+        [Authorize]
         public async Task<IActionResult> CriarAsync([FromBody] VisualizacaoFiltroDto visualizacaoFiltroDto)
         {
             if (visualizacaoFiltroDto == null)

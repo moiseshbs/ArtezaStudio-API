@@ -2,6 +2,7 @@
 using ArtezaStudio.Api.Responses;
 using ArtezaStudio.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ArtezaStudio.Api.Controllers
 {
@@ -31,6 +32,7 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpPost("criarTag/")]
+        [Authorize]
         public async Task<IActionResult> Criar([FromBody] TagFiltroDto tagFiltroDto)
         {
             if (tagFiltroDto == null)
@@ -43,6 +45,7 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpDelete("excluirTag/{id}")]
+        [Authorize]
         public async Task<IActionResult> Excluir(long id)
         {
             var resultado = await _tagService.ExcluirAsync(id);

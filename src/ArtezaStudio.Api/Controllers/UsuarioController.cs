@@ -2,6 +2,7 @@
 using ArtezaStudio.Api.Responses;
 using ArtezaStudio.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ArtezaStudio.Api.Controllers
 {
@@ -25,7 +26,7 @@ namespace ArtezaStudio.Api.Controllers
 
         [HttpGet("buscarPorId/{id}")]
         public async Task<IActionResult> ObterPorId(long id)
-        { 
+        {
             var usuario = await _usuarioService.ObterPorIdAsync(id);
             if (usuario == null)
             {
@@ -57,6 +58,7 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpPut("atualizarUsuario/")]
+        [Authorize]
         public async Task<IActionResult> Atualizar([FromBody] UsuarioFiltroDto usuarioFiltroDto)
         {
             if (usuarioFiltroDto == null || usuarioFiltroDto.Id == 0)
@@ -69,7 +71,7 @@ namespace ArtezaStudio.Api.Controllers
                 return NotFound("Usuário não encontrado.");
             }
 
-            if(usuarioFiltroDto.Email.Equals(usuarioExistente.Email) == false)
+            if (usuarioFiltroDto.Email.Equals(usuarioExistente.Email) == false)
             {
                 var existeEmail = await _usuarioService.ExisteEmailAsync(usuarioFiltroDto.Email);
                 if (existeEmail)
@@ -78,7 +80,7 @@ namespace ArtezaStudio.Api.Controllers
                 }
             }
 
-            if(usuarioFiltroDto.Username.Equals(usuarioExistente.Username) == false)
+            if (usuarioFiltroDto.Username.Equals(usuarioExistente.Username) == false)
             {
                 var existeUsername = await _usuarioService.ExisteUsernameAsync(usuarioFiltroDto.Username);
                 if (existeUsername)
@@ -92,6 +94,7 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpDelete("excluirUsuario/{id}")]
+        [Authorize]
         public async Task<IActionResult> Excluir(long id)
         {
             var usuarioExistente = await _usuarioService.ObterPorIdAsync(id);
@@ -105,30 +108,6 @@ namespace ArtezaStudio.Api.Controllers
                 return BadRequest("Erro ao excluir o usuário.");
             }
             return Ok(ApiResponse<bool>.Ok(true, "Usuário excluído com sucesso."));
-        }
-
-        [HttpPost("cadastrarUsuario/")]
-        public async Task<IActionResult> Criar([FromBody] UsuarioFiltroDto usuarioFiltroDto)
-        {
-            if (usuarioFiltroDto == null)
-            {
-                return BadRequest("Dados inválidos.");
-            }
-
-            var existeEmail = await _usuarioService.ExisteEmailAsync(usuarioFiltroDto.Email);
-            if (existeEmail)
-            {
-                return BadRequest("Já existe um usuário com este email.");
-            }
-
-            var existeUsername = await _usuarioService.ExisteUsernameAsync(usuarioFiltroDto.Username);
-            if (existeUsername)
-            {
-                return BadRequest("Já existe um usuário com este username.");
-            }
-
-            var novoUsuario = await _usuarioService.CriarAsync(usuarioFiltroDto);
-            return Ok(ApiResponse<UsuarioDto>.Ok(novoUsuario, "Usuário criado com sucesso"));
         }
     }
 }

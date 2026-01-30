@@ -8,7 +8,7 @@
         public string Email { get; set; } = string.Empty;
         public string Senha { get; set; } = string.Empty;
         public DateTime DataCadastro { get; set; } = DateTime.UtcNow;
-        public string ImagemPerfilUrl { get; set; } = string.Empty;
+        public string? ImagemPerfilUrl { get; set; }
         public bool IsAtivo { get; set; } = true;
 
         public ICollection<UsuarioSeguidor> Seguidores { get; set; } = new List<UsuarioSeguidor>();

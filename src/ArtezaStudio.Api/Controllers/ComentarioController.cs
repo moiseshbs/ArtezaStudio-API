@@ -2,6 +2,7 @@
 using ArtezaStudio.Api.Responses;
 using ArtezaStudio.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ArtezaStudio.Api.Controllers
 {
@@ -27,6 +28,7 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpPost("criarComentario/")]
+        [Authorize]
         public async Task<IActionResult> CriarAsync([FromBody] ComentarioFiltroDto comentarioFiltroDto)
         {
             if (comentarioFiltroDto == null)
@@ -37,6 +39,7 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpPut("atualizarComentario/")]
+        [Authorize]
         public async Task<IActionResult> AtualizarAsync([FromBody] ComentarioFiltroDto comentarioFiltroDto)
         {
             if (comentarioFiltroDto == null || comentarioFiltroDto.Id == 0)
@@ -47,6 +50,7 @@ namespace ArtezaStudio.Api.Controllers
         }
 
         [HttpDelete("excluirComentario/{id}")]
+        [Authorize]
         public async Task<IActionResult> ExcluirAsync(long id)
         {
             var excluido = await _comentarioService.ExcluirAsync(id);
