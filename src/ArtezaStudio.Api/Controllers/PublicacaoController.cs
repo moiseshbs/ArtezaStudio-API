@@ -3,49 +3,41 @@ using ArtezaStudio.Api.Responses;
 using ArtezaStudio.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using ArtezaStudio.Application.Dtos.Common;
 
 namespace ArtezaStudio.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class PublicacaoController : ControllerBase
+    public class PublicacaoController(IPublicacaoService publicacaoService) : ControllerBase
     {
-        private readonly IPublicacaoService _publicacaoService;
-
-        public PublicacaoController(IPublicacaoService publicacaoService)
-        {
-            _publicacaoService = publicacaoService;
-        }
+        private readonly IPublicacaoService _publicacaoService = publicacaoService;
 
         [HttpGet("listarPublicacoes/")]
-        public async Task<IActionResult> Listar()
+        public async Task<IActionResult> Listar([FromQuery] PaginationParams paginationParams)
         {
-            var publicacoes = await _publicacaoService.ListarAsync();
+            var publicacoes = await _publicacaoService.ListarAsync(paginationParams.Page, paginationParams.PageSize);
             return Ok(publicacoes);
         }
 
         [HttpGet("listarPublicacoesPorUsuario/{usuarioId}")]
-        public async Task<IActionResult> ListarPorUsuario(long usuarioId)
+        public async Task<IActionResult> ListarPorUsuario(long usuarioId, [FromQuery] PaginationParams paginationParams)
         {
-            var publicacoes = await _publicacaoService.ListarPorUsuarioIdAsync(usuarioId);
+            var publicacoes = await _publicacaoService.ListarPorUsuarioIdAsync(usuarioId, paginationParams.Page, paginationParams.PageSize);
             return Ok(publicacoes);
         }
 
         [HttpGet("listarPublicacoesPorTag/{tagId}")]
-        public async Task<IActionResult> ListarPorTag(long tagId)
+        public async Task<IActionResult> ListarPorTag(long tagId, [FromQuery] PaginationParams paginationParams)
         {
-            var publicacoes = await _publicacaoService.ListarPorTagIdAsync(tagId);
+            var publicacoes = await _publicacaoService.ListarPorTagIdAsync(tagId, paginationParams.Page, paginationParams.PageSize);
             return Ok(publicacoes);
         }
 
         [HttpGet("listarPublicacoesPorTermo/{termo}")]
-        public async Task<IActionResult> ListarPorTermo(string termo)
+        public async Task<IActionResult> ListarPorTermo(string termo, [FromQuery] PaginationParams paginationParams)
         {
-            if (string.IsNullOrWhiteSpace(termo))
-            {
-                return BadRequest("Termo de pesquisa inválido.");
-            }
-            var publicacoes = await _publicacaoService.ListarPorTermoAsync(termo);
+            var publicacoes = await _publicacaoService.ListarPorTermoAsync(termo, paginationParams.Page, paginationParams.PageSize);
             return Ok(publicacoes);
         }
 
@@ -53,11 +45,6 @@ namespace ArtezaStudio.Api.Controllers
         [Authorize]
         public async Task<IActionResult> Criar([FromBody] PublicacaoFiltroDto publicacaoFiltroDto)
         {
-            if (publicacaoFiltroDto == null)
-            {
-                return BadRequest("Dados inválidos.");
-            }
-
             var novaPublicacao = await _publicacaoService.CriarAsync(publicacaoFiltroDto);
             return Ok(ApiResponse<PublicacaoDto>.Ok(novaPublicacao, "Publicação criada com sucesso"));
         }
@@ -66,10 +53,6 @@ namespace ArtezaStudio.Api.Controllers
         public async Task<IActionResult> ObterPorId(long id)
         {
             var publicacao = await _publicacaoService.ObterPorIdAsync(id);
-            if (publicacao == null)
-            {
-                return NotFound("Publicação não encontrada.");
-            }
             return Ok(publicacao);
         }
 
@@ -77,11 +60,7 @@ namespace ArtezaStudio.Api.Controllers
         [Authorize]
         public async Task<IActionResult> Excluir(long id)
         {
-            var resultado = await _publicacaoService.ExcluirAsync(id);
-            if (!resultado)
-            {
-                return NotFound("Publicação não encontrada.");
-            }
+            await _publicacaoService.ExcluirAsync(id);
             return Ok(ApiResponse<bool>.Ok(true, "Publicação excluída com sucesso."));
         }
 
@@ -89,10 +68,6 @@ namespace ArtezaStudio.Api.Controllers
         [Authorize]
         public async Task<IActionResult> Atualizar([FromBody] PublicacaoFiltroDto publicacaoFiltroDto)
         {
-            if (publicacaoFiltroDto == null)
-            {
-                return BadRequest("Dados inválidos.");
-            }
             var publicacaoAtualizada = await _publicacaoService.AtualizarAsync(publicacaoFiltroDto);
             return Ok(ApiResponse<PublicacaoDto>.Ok(publicacaoAtualizada, "Publicação atualizada com sucesso."));
         }

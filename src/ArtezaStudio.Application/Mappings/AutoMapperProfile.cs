@@ -13,10 +13,12 @@ namespace ArtezaStudio.Application.Mappings
     {
         public AutoMapperProfile()
         {
-            CreateMap<Publicacao, PublicacaoDto>();
+            CreateMap<Publicacao, PublicacaoDto>()
+                .ForMember(dest => dest.TotalComentarios, opt => opt.MapFrom(src => src.Comentarios.Count))
+                .ForMember(dest => dest.TotalCurtidas, opt => opt.MapFrom(src => src.Curtidas.Count))
+                .ForMember(dest => dest.TotalVisualizacoes, opt => opt.MapFrom(src => src.Visualizacoes.Count));
             CreateMap<PublicacaoFiltroDto, Publicacao>()
-                .ForMember(dest => dest.Usuario, opt => opt.Ignore());
-            CreateMap<PublicacaoFiltroDto, Publicacao>()
+                .ForMember(dest => dest.Usuario, opt => opt.Ignore())
                 .ForMember(dest => dest.PublicacaoTags, opt => opt.Ignore());
 
             CreateMap<Comentario, ComentarioDto>();

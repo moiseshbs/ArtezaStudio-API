@@ -57,41 +57,26 @@ namespace ArtezaStudio.Infrastructure.Data
 
             modelBuilder.Entity<Publicacao>()
                 .HasMany(p => p.Visualizacoes)
-                .WithOne(c => c.Publicacao)
-                .HasForeignKey(c => c.PublicacaoId);
+                .WithOne(v => v.Publicacao)
+                .HasForeignKey(v => v.PublicacaoId);
 
             // Configuração da entidade Comentarios
             modelBuilder.Entity<Comentario>()
-                .HasOne(u => u.Usuario)
+                .HasOne(c => c.Usuario)
                 .WithMany()
-                .HasForeignKey(u => u.UsuarioId);
-
-            modelBuilder.Entity<Comentario>()
-                .HasOne(p => p.Publicacao)
-                .WithMany()
-                .HasForeignKey(p => p.PublicacaoId);
+                .HasForeignKey(c => c.UsuarioId);
 
             // Configuração da entidade Curtidas
             modelBuilder.Entity<Curtida>()
-                .HasOne(u => u.Usuario)
+                .HasOne(c => c.Usuario)
                 .WithMany()
-                .HasForeignKey(u => u.UsuarioId);
-
-            modelBuilder.Entity<Curtida>()
-                .HasOne(p => p.Publicacao)
-                .WithMany()
-                .HasForeignKey(p => p.PublicacaoId);
+                .HasForeignKey(c => c.UsuarioId);
 
             // Configuração da entidade Visualizacoes
             modelBuilder.Entity<Visualizacao>()
-                .HasOne(u => u.Usuario)
+                .HasOne(v => v.Usuario)
                 .WithMany()
-                .HasForeignKey(u => u.UsuarioId);
-
-            modelBuilder.Entity<Visualizacao>()
-                .HasOne(p => p.Publicacao)
-                .WithMany()
-                .HasForeignKey(p => p.PublicacaoId);
+                .HasForeignKey(v => v.UsuarioId);
 
             // Configuração da entidade Tags
             modelBuilder.Entity<Tag>().ToTable("tags");
