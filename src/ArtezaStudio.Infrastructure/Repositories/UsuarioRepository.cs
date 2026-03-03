@@ -1,0 +1,75 @@
+﻿using ArtezaStudio.Infrastructure.Data;
+using ArtezaStudio.Domain.Entities;
+using ArtezaStudio.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
+
+namespace ArtezaStudio.Infrastructure.Repositories
+{
+    public class UsuarioRepository : IUsuarioRepository
+    {
+        private readonly ArtezaContext _context;
+        public UsuarioRepository(ArtezaContext context)
+        {
+            _context = context;
+        }
+        public async Task<IEnumerable<Usuario>> ListarAsync()
+        {
+            return await _context.Usuarios.ToListAsync();
+        }
+
+        public async Task<Usuario> CriarAsync(Usuario usuario)
+        {
+            _context.Usuarios.Add(usuario);
+            await _context.SaveChangesAsync();
+            return usuario;
+        }
+
+        public async Task<Usuario> ObterPorIdAsync(long id)
+        {
+            return await _context.Usuarios.FindAsync(id);
+        }
+
+        public async Task<Usuario> ObterPorEmailAsync(string email)
+        {
+            return await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower());
+        }
+
+        public async Task<Usuario> ObterPorUsernameAsync(string username)
+        {
+            return await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.Username.ToLower() == username.ToLower());
+        }
+
+        public async Task<Usuario> AtualizarAsync(Usuario usuario)
+        {
+            var procuraUsuario = _context.Usuarios.Find(usuario.Id);
+            if (procuraUsuario == null)
+                throw new KeyNotFoundException("Usuário não encontrado.");
+
+            procuraUsuario.Nome = usuario.Nome;
+            procuraUsuario.Username = usuario.Username;
+            procuraUsuario.Email = usuario.Email;
+            procuraUsuario.Senha = usuario.Senha;
+            procuraUsuario.ImagemPerfilUrl = usuario.ImagemPerfilUrl;
+            procuraUsuario.IsAtivo = usuario.IsAtivo;
+
+            return await _context.SaveChangesAsync().ContinueWith(t => procuraUsuario);
+        }
+
+        public async Task<bool> ExcluirAsync(long id)
+        {
+            return await _context.Usuarios.Where(u => u.Id == id).ExecuteDeleteAsync() > 0;
+        }
+
+        public async Task<bool> ExisteEmailAsync(string email)
+        {
+            return await _context.Usuarios.AnyAsync(u => u.Email == email);
+        }
+
+        public async Task<bool> ExisteUsernameAsync(string username)
+        {   
+            return await _context.Usuarios.AnyAsync(u => u.Username == username);
+        }
+    }
+}
