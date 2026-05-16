@@ -1,8 +1,6 @@
 name: CI - ArtezaStudio API # Nome do workflow
 
 on:
-  push:
-    branches: [ main, develop ] # Branches que disparam o workflow
   pull_request:
     branches: [ main, develop ] # PRs que disparam o workflow
 
