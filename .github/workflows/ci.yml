@@ -1,0 +1,36 @@
+name: CI - ArtezaStudio API # Nome do workflow
+
+on:
+  push:
+    branches: [ main, develop ] # Branches que disparam o workflow
+  pull_request:
+    branches: [ main, develop ] # PRs que disparam o workflow
+
+env:
+  DOTNET_VERSION: '9.0' # Versão do .NET a ser usada
+
+jobs:
+  build-and-test: # Nome do job
+    runs-on: ubuntu-latest # Sistema operacional
+
+    steps:
+      - name: Checkout code # Clona o repositório
+        uses: actions/checkout@v4
+
+      - name: Setup .NET # Configura o SDK do .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore dependencies # Restaura os pacotes NuGet
+        run: dotnet restore
+
+      - name: Build solution # Compila a solução
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Run unit tests # Executa testes unitários
+        run: dotnet test --configuration Release --no-build --verbosity normal
+
+      - name: Check code formatting # Verifica formatação do código (opcional)
+        run: dotnet format --verify-no-changes --verbosity diagnostic
+        continue-on-error: true # Não falha o workflow se houver problemas de formatação
