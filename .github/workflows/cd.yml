@@ -1,0 +1,81 @@
+name: CD - ArtezaStudio API
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: # Permite disparo manual
+
+env:
+  DOTNET_VERSION: '9.0'
+  DOCKER_IMAGE_NAME: ${{ secrets.DOCKERHUB_USER }}/artezastudio-api
+  CONTAINER_NAME: artezastudio-api
+  CONTAINER_PORT: 8080
+
+jobs:
+  deploy:
+    runs-on: self-hosted # Usa o seu self-hosted runner
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Pull latest image
+        run: docker pull ${{ env.DOCKER_IMAGE_NAME }}:latest
+
+      - name: Stop current container
+        run: |
+          if [ "$(docker ps -q -f name=${{ env.CONTAINER_NAME }})" ]; then
+            echo "Stopping container ${{ env.CONTAINER_NAME }}..."
+            docker stop ${{ env.CONTAINER_NAME }}
+          else
+            echo "Container ${{ env.CONTAINER_NAME }} is not running"
+          fi
+        shell: bash
+
+      - name: Remove current container
+        run: |
+          if [ "$(docker ps -aq -f name=${{ env.CONTAINER_NAME }})" ]; then
+            echo "Removing container ${{ env.CONTAINER_NAME }}..."
+            docker rm ${{ env.CONTAINER_NAME }}
+          else
+            echo "Container ${{ env.CONTAINER_NAME }} does not exist"
+          fi
+        shell: bash
+
+      - name: Remove old images
+        run: |
+          docker image prune -a --force --filter "until=72h"
+        continue-on-error: true
+
+      - name: Run new container
+        run: |
+          docker run -d \
+            --name ${{ env.CONTAINER_NAME }} \
+            --restart unless-stopped \
+            -p ${{ env.CONTAINER_PORT }}:8080 \
+            -e ASPNETCORE_ENVIRONMENT=Production \
+            ${{ env.DOCKER_IMAGE_NAME }}:latest
+        shell: bash
+
+      - name: Verify container is running
+        run: |
+          echo "Waiting for container to be healthy..."
+          sleep 5
+          if [ "$(docker ps -q -f name=${{ env.CONTAINER_NAME }})" ]; then
+            echo "✓ Container is running"
+            docker ps -f name=${{ env.CONTAINER_NAME }}
+          else
+            echo "✗ Container failed to start"
+            docker logs ${{ env.CONTAINER_NAME }}
+            exit 1
+          fi
+        shell: bash
+
+      - name: Deployment successful
+        run: echo "✓ Deployment of ${{ env.DOCKER_IMAGE_NAME }}:latest completed successfully"
