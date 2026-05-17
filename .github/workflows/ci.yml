@@ -44,7 +44,7 @@ jobs:
         run: dotnet restore
 
       - name: Run unit tests # Executa testes unitários
-        run: dotnet test --configuration Release --no-build --verbosity normal
+        run: dotnet test --configuration Release --verbosity normal
 
   format: # Job para validação de formatação
     runs-on: ubuntu-latest
